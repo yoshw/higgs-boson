@@ -7,6 +7,26 @@ from textwrap import wrap
 
 prompt = "\n> "
 
+
+# MISC FUNCTIONS
+
+def menu():
+    print menu_txt
+    while True:
+        menu = raw_input(prmpt).lower()
+
+        if menu == "1" or menu == "start" or menu == "start game":
+            print w(start_txt)
+            return room('entryrm')
+        elif menu == "2" or menu == "instructions" or menu == "instruct":
+            instruct()
+            print menu_txt
+        elif menu == "3" or "exit" in menu:
+            print "\nGoodbye!\n"
+            exit()
+        else:
+            print fail_txt
+
 def gameover(why):
     global xflag
     print "\nOh no, you", why, "You're dead!"
@@ -31,80 +51,42 @@ def w(str):
     jstr = '\n'.join(l)
     return jstr.replace('\n\n\n','\n\n')
 
-"""def prompter(rm):
-    raw = raw_input(prompt).lower()
 
-    if raw == "inv" or raw == "inventory":
-        inv()
-        return prompter(rm)
-    elif raw == "instr" or raw == "instruct" or raw == "instructions":
-        instruct()
-        return prompter(rm)    
-    elif raw == "exit":
-        print "\nGoodbye!\n"
-        exit(0)
+# INVENTORY FUNCTIONS
 
-    obj = []
-    mode = []
-
-    ob_list = dic[rm].keys()
-
-    for ob in ob_list:
-        for name in ob:
-            if name in raw:
-                obj.append(ob)
-#    print "ob_list:", ob_list
-
-    obj = list(set(obj))
-#    print "obj:", obj
-
-    if len(obj) == 0:
-        print "I don't understand that."
-        return prompter(rm)
-
-    md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
-
-    for md in md_list:
-        if md in raw:
-            mode.append(md)
-#    print "mode:", mode
-
-    if len(obj) == 1 and len(mode) == 0:
-        print "What do you want to do with that object?"
-        return prompter(rm)
-    elif len(obj) > 1 or len(mode) > 1:
-        print "No more than one action or object at a time, please."
-        return prompter(rm)
-    else:
-        exec dic[rm][obj[0]][states[rm][obj[0]]][mode[0]]
-        return prompter(rm)"""
-        
-#def use(str):
-
-
-def inv(rm):
+def invprint():
     inv_list = [x[0] for x in idic.keys() if states['inv'][x] == 1]
 
     print inv_txt
     if len(inv_list) == 0:
         print "        - Nothing here right now!"
-    for i in range(0, len(inv_list)):
-        print "        - ", inv_list[i]
+    else:
+        for i in range(0, len(inv_list)):
+            print "        - ", inv_list[i]
     print inv2_txt
+            
+def inv(rm):
+    invprint()
 
-    invprompter(rm)
+    invq = 0
+    while invq != 1:
+        invq = invprompter(rm)
+        print invq
+    print "You close your bag and sling it back over your shoulder.\n"
+    return
 
 def invprompter(rm):
     raw = raw_input("\nINV >> ").lower()
 
     if raw == "inv" or raw == "inventory":
-        inv(rm)
+        invprint()
+        return
     elif raw == "instr" or raw == "instruct" or raw == "instructions":
         instruct()
-        invprompter(rm)
-    elif "exit" in raw or "return" in raw:
-        print "You close your bag and sling it back over your shoulder.\n"
         return
+    elif "exit" in raw or "return" in raw:
+        invq = 1
+        return invq
 
     obj = []
     mode = []
@@ -121,7 +103,7 @@ def invprompter(rm):
 
     if len(obj) == 0:
         print fail_txt
-        return invprompter(rm)
+        return
 
     md_list = ['look','use','combine']
 
@@ -131,31 +113,33 @@ def invprompter(rm):
 
     if len(obj) == 1 and len(mode) == 0:
         print "I don't understand that action."
-        return invprompter(rm)
+        return
     elif len(obj) > 1 and len(mode) == 0:
         print fail_txt
-        return invprompter(rm)
+        return
     elif len(mode) > 1:
         print "No more than one action at a time, please."
-        return invprompter(rm)
+        return
     elif mode[0] == 'look' and len(obj) == 1:
         exec idic[obj[0]][1]['d']
-        return invprompter(rm)
+        return
     elif mode[0] == 'look':
         print "You can only look at one item at a time."
-        return invprompter(rm)
+        return
     elif mode[0] == 'combine' and (len(obj) != 2):
         print "You need to combine (exactly) two items."
-        return invprompter(rm)
+        return
     elif mode[0] == 'combine':
         exec idic[obj[0]][1]['combine'][obj[1]]
-        return None
+        invq = 1
+        return invq
     elif mode[0] == 'use' and len(obj) != 1:
         print fail_txt
-        return invprompter(rm)
+        return
     else:
         invuse(obj[0], raw, rm)
-        return None
+        invq = 1
+        return invq
 
 def invuse(item, raw, rm):
     obj = []
@@ -169,11 +153,14 @@ def invuse(item, raw, rm):
     if item in obj:
         obj.remove(item)
 
-    if len(obj) != 1:
+    if len(obj) > 1:
         print fail_txt
-        return invprompter(rm)
+        return
+    elif len(obj) == 0:
+        print "You need to use the %s with another object." % item[0]
+        return
     elif obj[0] in idic[item][1]['use'].keys():
         exec idic[item][1]['use'][obj[0]]
     else:
         print "You can't use the %s in that way." % item[0]
-        return invprompter(rm)
+        return

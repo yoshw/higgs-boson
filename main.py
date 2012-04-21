@@ -4,23 +4,6 @@ from funcs import *
 
 xflag = False
 
-def menu():
-    print menu_txt
-    while True:
-        menu = raw_input(prmpt).lower()
-
-        if menu == "1" or menu == "start" or menu == "start game":
-            print w(start_txt)
-            return room('entryrm')
-        elif menu == "2" or menu == "instructions" or menu == "instruct":
-            instruct()
-            print menu_txt
-        elif menu == "3" or "exit" in menu:
-            print "\nGoodbye!\n"
-            exit(0)
-        else:
-            print fail_txt
-
 def prompter(rm):
     global xflag
     raw = raw_input(prmpt).lower()

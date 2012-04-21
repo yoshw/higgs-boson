@@ -13,15 +13,15 @@ prompt = "\n> "
 def menu():
     print menu_txt
     while True:
-        menu = raw_input(prmpt).lower()
+        menu = raw_input(prmpt).lower().split()
 
-        if menu == "1" or menu == "start" or menu == "start game":
+        if "1" in menu or "start" in menu:
             print w(start_txt)
-            return room('entryrm')
-        elif menu == "2" or menu == "instructions" or menu == "instruct":
+            return
+        elif "2" in menu or "instructions" in menu or "instruct" in menu:
             instruct()
             print menu_txt
-        elif menu == "3" or "exit" in menu:
+        elif "3" in menu or "exit" in menu or "quit" in menu:
             print "\nGoodbye!\n"
             exit()
         else:
@@ -69,10 +69,10 @@ def inv(rm):
     invprint()
 
     invq = 0
-    while invq != 1:
+    while invq != 1 and invq != 2:
         invq = invprompter(rm)
-        print invq
-    print "You close your bag and sling it back over your shoulder.\n"
+    if invq == 1:
+        print "You close your bag and sling it back over your shoulder."
     return
 
 def invprompter(rm):
@@ -130,15 +130,17 @@ def invprompter(rm):
         print "You need to combine (exactly) two items."
         return
     elif mode[0] == 'combine':
-        exec idic[obj[0]][1]['combine'][obj[1]]
-        invq = 1
-        return invq
+        if obj[1] in idic[obj[0]][1]['combine'].keys():
+            exec idic[obj[0]][1]['combine'][obj[1]]
+            return
+        else:
+            print "Those items can't be combined."
+            return
     elif mode[0] == 'use' and len(obj) != 1:
         print fail_txt
         return
     else:
-        invuse(obj[0], raw, rm)
-        invq = 1
+        invq = invuse(obj[0], raw, rm)
         return invq
 
 def invuse(item, raw, rm):
@@ -155,12 +157,13 @@ def invuse(item, raw, rm):
 
     if len(obj) > 1:
         print fail_txt
-        return
+        return 0
     elif len(obj) == 0:
-        print "You need to use the %s with another object." % item[0]
-        return
+        print "You need to use the %s with another (present) object." % item[0]
+        return 0
     elif obj[0] in idic[item][1]['use'].keys():
         exec idic[item][1]['use'][obj[0]]
+        return 2
     else:
         print "You can't use the %s in that way." % item[0]
-        return
+        return 0

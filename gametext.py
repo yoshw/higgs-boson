@@ -97,7 +97,7 @@ chair = ('chair', 'armchair', 'seat')
 fireplace = ('fireplace', 'fire', 'grate', 'hearth')
 bongos = ('bongos', 'bongo', 'drum')
 tripod = ('tripod', 'camera tripod', 'camera stand')
-up_bongos = ('upright bongos', 'up bongos')
+up_bongos = ('upright bongos', 'bongos', 'upright')
 wardrobe = ('wardrobe', 'robe', 'cupboard', 'chest of drawers')
 rope = ('rope', 'bale', 'cord', 'coil', 'cable')
 teaspoon = ('teaspoon', 'spoon')
@@ -109,10 +109,10 @@ key_c = ('key c', 'third key')
 
 door = ('door', 'portal')
 portal = ('portal', 'entrance')
-n_door = ('north door', 'door north', 'door to the north', 'n_door')
-e_door = ('east door', 'door east', 'door to the east', 'e_door')
-w_door = ('west door', 'door west', 'door to the west', 'w_door')
-s_door = ('south door', 'door south', 'door to the south', 's_door')
+n_door = ('north door', 'door north', 'door to the north', 'n_door', 'n')
+e_door = ('east door', 'door east', 'door to the east', 'e_door', 'e')
+w_door = ('west door', 'door west', 'door to the west', 'w_door', 'w')
+s_door = ('south door', 'door south', 'door to the south', 's_door', 's')
 staircase = ('staircase', 'stairs', 'spiral staircase', 'spiral stairs', 'stairway')
 
 # MAIN DICTIONARY
@@ -444,7 +444,7 @@ states["downrm"][rope] = 1
 states["downrm"][teaspoon] = 1
 states["downrm"][wardrobe] = 2
 """,
-    "take": "print w('''That's not really feasible.''')"
+    "take": "print w('''That's not really feasible. It's a pretty big wardrobe.''')"
     }
 dic["downrm"][wardrobe][1]["use"] = copy.deepcopy(dic["downrm"][wardrobe][1]["open"])
 dic["downrm"][wardrobe][2] = copy.deepcopy(dic["downrm"][wardrobe][1])

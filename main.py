@@ -2,24 +2,23 @@
 
 from funcs import *
 
-xflag = False
+qflag = False
 
 def prompter(rm):
-    global xflag
-    raw = raw_input(prmpt).lower()
+    global qflag
+    raw = raw_input(prmpt).lower().split()
 
-    if raw == "inv" or raw == "inventory":
+    if "inv" in raw or "inventory" in raw:
         inv(rm)
-        return prompter(rm)
-    elif raw == "instr" or raw == "instruct" or raw == "instructions":
+        return
+    elif "instr" in raw or "instruct" in raw or "instructions" in raw:
         instruct()
-        return prompter(rm)
+        return
     elif raw == "map":
         print fullmap
-        return prompter(rm)
-    elif "exit" in raw:
-        print "\nGoodbye!\n"
-        xflag = True
+        return
+    elif "exit" in raw or "quit" in raw:
+        qflag = True
         return
 
     obj = []
@@ -38,7 +37,7 @@ def prompter(rm):
 
     if len(obj) == 0:
         print fail_txt
-        return prompter(rm)
+        return
 
     md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
 
@@ -50,25 +49,27 @@ def prompter(rm):
 
     if len(obj) == 1 and len(mode) == 0:
         print "I don't understand that action."
-        return prompter(rm)
+        return
     elif len(obj) > 1 or len(mode) > 1:
         print "No more than one action or object at a time, please."
-        return prompter(rm)
+        return
     elif len(obj) == 1 and mode[0] == 'use' and len(item) > 0:
         print "Try opening your inventory first."
-        return prompter(rm)
+        return
     else:
         exec dic[rm][obj[0]][states[rm][obj[0]]][mode[0]]
-        return prompter(rm)
+        return
 
 def room(rm):
     raw_input("\nENTER TO CONTINUE >\n")
     exec dic[rm][roomd][states[rm][roomd]]["look"]
     while True:
-        if xflag == False:
+        if qflag == False:
             prompter(rm)
         else:
+            print "\nGoodbye!\n"
             exit()
         
 print title_txt
 menu()
+room('entryrm')

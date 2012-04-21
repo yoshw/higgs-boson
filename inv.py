@@ -49,6 +49,7 @@ states['inv'][bongos] = 0
 states['inv'][tripod] = 0
 states['inv'][up_bongos] = 1"""
     }
+idic[bongos][1]['use'][tripod] = copy.deepcopy(idic[bongos][1]['combine'][tripod])
 
 idic[tripod][1]['d'] = "print w('A rusty old tripod.')"
 idic[tripod][1]['use'] = {
@@ -60,6 +61,7 @@ states['inv'][bongos] = 0
 states['inv'][tripod] = 0
 states['inv'][up_bongos] = 1"""
     }
+idic[tripod][1]['use'][bongos] = copy.deepcopy(idic[tripod][1]['combine'][bongos])
 
 idic[up_bongos][1]['d'] = "print w('A cheap pair of bongos wedged onto the top of a rusty old tripod.')"
 idic[up_bongos][1]['use'] = {

@@ -6,8 +6,9 @@ states = {}
 
 states["entryrm"] = {
     roomd: 0,
+    e_door: 1,
+    w_door: 1,    
     chair: 1,
-    door: 1,
     sagan: 1
     }
 

@@ -7,7 +7,8 @@ qflag = False
 def prompter(rm):
     global qflag
     raw = raw_input(prmpt).lower().split()
-
+    # print "raw:", raw
+    
     if "inv" in raw or "inventory" in raw:
         inv(rm)
         return
@@ -33,7 +34,7 @@ def prompter(rm):
     #    print "ob_list:", ob_list
 
     obj = list(set(obj))
-    #print "obj:", obj
+    #    print "obj:", obj
 
     if len(obj) == 0:
         print fail_txt
@@ -42,9 +43,10 @@ def prompter(rm):
     md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
 
     for md in md_list:
-        if md in raw:
-            mode.append(md)
-#    print "mode:", mode
+        for name in md:
+            if name in raw:
+                mode.append(md)
+    #    print "mode:", mode
     item = [x[0] for x in idic.keys() for n in x if (n in raw and states['inv'][x] == 1)]
 
     if len(obj) == 1 and len(mode) == 0:
@@ -62,7 +64,7 @@ def prompter(rm):
 
 def room(rm):
     raw_input("\nENTER TO CONTINUE >\n")
-    exec dic[rm][roomd][states[rm][roomd]]["look"]
+    exec dic[rm][roomd][states[rm][roomd]][look]
     while True:
         if qflag == False:
             prompter(rm)

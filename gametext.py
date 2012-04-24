@@ -163,7 +163,7 @@ dic["entryrm"][e_door][1] = {
     look: "print w('A largeish steel door.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('You try the handle on the heavy steel door. It is unlocked, and opens slowly.')
-room('mainrm')""",
+newrm = 'mainrm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["entryrm"][e_door][1][use] = dic["entryrm"][e_door][1][go] = copy.deepcopy(dic["entryrm"][e_door][1][opn])
@@ -244,7 +244,7 @@ dic["mainrm"][s_door][1] = {
     look: "print w('A black door with a round handle, set in the south wall.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('The door opens easily, and you pass through.')
-room('muneurm')""",
+newrm = 'muneurm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["mainrm"][s_door][1][use] = dic["mainrm"][s_door][1][go] = copy.deepcopy(dic["mainrm"][s_door][1][opn])
@@ -253,7 +253,7 @@ dic["mainrm"][n_door][1] = {
     look: "print w('A black door with a round handle, set in the north wall. There is an odd design painted on it: interlocking red, blue and green circles. I wonder what it means.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('The handle turns easily, and you pass through the door.')
-room('strangerm')""",
+newrm = 'strangerm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["mainrm"][n_door][1][use] = dic["mainrm"][n_door][1][go] = copy.deepcopy(dic["mainrm"][n_door][1][opn])
@@ -262,7 +262,7 @@ dic["mainrm"][w_door][1] = {
     look: "print w('''The steel door you just came through. You can go back if you like, but I wouldn't recommend it.''')",
     talk: "print w('The door remains silent.')",
     opn: """print w('With an effort, you push open the door and go back to the entrance chamber.')
-room('entryrm')""",
+newrm = 'entryrm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["mainrm"][w_door][1][use] = dic["mainrm"][w_door][1][go] = copy.deepcopy(dic["mainrm"][w_door][1][opn])
@@ -325,7 +325,7 @@ dic["strangerm"][s_door][1] = {
     look: "print w('The door you just came through.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('With an effort, you push open the door and go back to the central room.')
-room('mainrm')""",
+newrm = 'mainrm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["strangerm"][s_door][1][use] = dic["strangerm"][s_door][1][go] = copy.deepcopy(dic["strangerm"][s_door][1][opn])
@@ -334,7 +334,7 @@ dic["strangerm"][w_door][1] = {
     look: "print w('A featureless door.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('''As you open the door, you notice Dirac watching you. He seems to be smiling.''')
-room('downrm')""",
+newrm = 'downrm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["strangerm"][w_door][1][use] = dic["strangerm"][w_door][1][go] = copy.deepcopy(dic["strangerm"][w_door][1][opn])
@@ -427,7 +427,7 @@ dic["downrm"][e_door][1] = {
     look: "print w('The door you just came through.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('With an effort, you push open the door and go back.')
-room('strangerm')""",
+newrm = 'strangerm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["downrm"][e_door][1][use] = dic["downrm"][e_door][1][go] = copy.deepcopy(dic["downrm"][e_door][1][opn])
@@ -442,7 +442,7 @@ dic["downrm"][n_door][1][use] = dic["downrm"][n_door][1][go] = copy.deepcopy(dic
 dic["downrm"][n_door][2] = copy.deepcopy(dic["downrm"][n_door][1])
 dic["downrm"][n_door][2][look] = "print w('An empty portal leading to another room.')"
 dic["downrm"][n_door][2][opn] = dic["downrm"][n_door][2][use] = dic["downrm"][n_door][2][go] = """print w('You stoop and pass through the portal.')
-room('uprm')"""
+newrm = 'uprm'"""
 dic["downrm"][portal] = copy.deepcopy(dic["downrm"][n_door])
 
 dic["downrm"][wardrobe][1] = {
@@ -545,7 +545,7 @@ dic["uprm"][s_door] = copy.deepcopy(dic["uprm"][roomd])
 dic["uprm"][hadrons] = copy.deepcopy(dic["uprm"][roomd])
 dic["uprm"][rope] = copy.deepcopy(dic["uprm"][roomd])
 
-dic["uprm"][roomd][0][look] = """print w(''' 'What the --!' You're barely over the threshold when you find yourself falling upwards and crashing into the 'ceiling'. You collect yourself, rub your bruised shoulder, and wonder why Gell-Mann didn't warn you.
+dic["uprm"][roomd][0][look] = """print w(''''What the --!' You're barely over the threshold when you find yourself falling upwards and crashing into the 'ceiling'. You collect yourself, rub your bruised shoulder, and wonder why Gell-Mann didn't warn you.
 
 So, this is another one of those funny gravity rooms. At least that explains why the briefcase is stuck on the ceiling. Looking around, you see that the briefcase is the only thing of interest in the room.''')
 states["uprm"][roomd] = 1"""
@@ -567,7 +567,7 @@ dic["uprm"][s_door][1] = {
     look: "print w('An empty doorway, now about two metres off the ground, which leads back to the room you just came from.')" ,
     talk: "print w('The portal is silent.')",
     opn: """print w('You jump up, grab the lintel, and pull yourself through the portal.')
-room('downrm')""",
+newrm = 'downrm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["uprm"][s_door][1][use] = dic["uprm"][s_door][1][go] = copy.deepcopy(dic["uprm"][s_door][1][opn])
@@ -631,7 +631,7 @@ dic["muneurm"][n_door][1] = {
     look: "print w('The door you just came through.')",
     talk: "print w('The door remains silent.')",
     opn: """print w('With an effort, you push open the door and go back to the central room.')
-room('mainrm')""",
+newrm = 'mainrm'""",
     get: "print w('''Hey, you can't do that.''')"
     }
 dic["muneurm"][n_door][1][use] = dic["muneurm"][n_door][1][go] = copy.deepcopy(dic["muneurm"][n_door][1][opn])
@@ -647,7 +647,7 @@ dic["muneurm"][s_door][1] = {
 dic["muneurm"][s_door][1][use] = dic["muneurm"][s_door][1][go] = copy.deepcopy(dic["muneurm"][s_door][1][opn])
 dic["muneurm"][s_door][2] = copy.deepcopy(dic["muneurm"][s_door][1])
 dic["muneurm"][s_door][2][opn] = dic["muneurm"][s_door][2][use] = """print w('With Feynman safely distracted, you open the door easily and pass into the next room.')
-room('entryrm')"""
+newrm = 'entryrm'"""
 
 dic["muneurm"][e_door] = copy.deepcopy(dic["muneurm"][s_door])
 dic["muneurm"][w_door] = copy.deepcopy(dic["muneurm"][s_door])

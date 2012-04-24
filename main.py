@@ -7,24 +7,26 @@ qflag = False
 
 def prompter(rm):
     global qflag
+    newrm = rm
+    
     raw = raw_input(prmpt).lower().split()
     # print "raw:", raw
     
     if "inv" in raw or "inventory" in raw:
         inv(rm)
-        return
+        return rm
     elif "instr" in raw or "instruct" in raw or "instructions" in raw:
         instruct()
-        return
+        return rm
     elif raw == ["map"]:
         print fullmap
-        return
+        return rm
     elif "exit" in raw or "quit" in raw:
         qflag = True
-        return
+        return rm
     elif raw == ["traceback"]:
         traceback.print_stack()
-        return
+        return rm
 
     obj = []
     mode = []
@@ -45,7 +47,7 @@ def prompter(rm):
             exec dic[rm][roomd][states[rm][roomd]][look]
         else:
             print fail_txt
-        return
+        return rm
 
     md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
 
@@ -58,27 +60,32 @@ def prompter(rm):
 
     if len(obj) == 1 and len(mode) == 0:
         print "I don't understand that action."
-        return
+        return rm
     elif len(obj) > 1 or len(mode) > 1:
         print "No more than one action or object at a time, please."
-        return
+        return rm
     elif len(obj) == 1 and mode[0] == 'use' and len(item) > 0:
         print "Try opening your inventory first."
-        return
+        return rm
     else:
         exec dic[rm][obj[0]][states[rm][obj[0]]][mode[0]]
-        return
+        return newrm
 
-def room(rm):
-    raw_input("\nENTER TO CONTINUE >\n")
-    exec dic[rm][roomd][states[rm][roomd]][look]
+def room():
+    rm = "entryrm"
+    newrm = rm
+
     while True:
-        if qflag == False:
-            prompter(rm)
-        else:
-            print "Goodbye!\n"
-            exit()
+        raw_input("\nENTER TO CONTINUE >\n")
+        exec dic[rm][roomd][states[rm][roomd]][look]
+        while newrm == rm:
+            newrm = prompter(rm)
+            if qflag == True:
+                print "Goodbye!\n"
+                exit()
+        rm = newrm
+
         
 print title_txt
 menu()
-room('entryrm')
+room()

@@ -22,7 +22,7 @@ def menu():
             instruct()
             print menu_txt
         elif "3" in menu or "exit" in menu or "quit" in menu:
-            print "\nGoodbye!\n"
+            print "Goodbye!\n"
             exit()
         else:
             print fail_txt

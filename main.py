@@ -19,7 +19,7 @@ def prompter(rm):
         instruct()
         return rm
     elif raw == ["map"]:
-        print fullmap
+        mapp(rm)
         return rm
     elif "exit" in raw or "quit" in raw:
         qflag = True

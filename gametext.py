@@ -1,6 +1,5 @@
 # This Python file uses the following encoding: utf-8
 
-from smdmap import *
 import copy
 
 prmpt = "\n >> "
@@ -149,7 +148,8 @@ dic["entryrm"][roomd][0][look] = """print w('''You stumble into the entrance hal
 You look around. In the eastern section of the curved wall, opposite the front entrance, is another, smaller steel door. The only other object in the room is a plush armchair a few metres away from you. Carl Sagan is sitting in the armchair, calmly reading a book. He looks up.
 
 'Welcome to the Standard Model Dungeon, friend,' he says. 'Don't be afraid. The goal you seek is almost at hand. There are just a few final challenges you must face. But I am confident you'll attain your prize.' ''')
-states["entryrm"][roomd] = 1"""
+states["entryrm"][roomd] = 1
+rmshow('entryrm')"""
 dic["entryrm"][roomd][1][look] = "print w('You are in a small, gravityless spherical chamber. On the west side, the entrance to the Standard Model Dungeon. On the east, a large steel door. Carl Sagan floats in an armchair nearby.')"
 dic["entryrm"][roomd][2][look] = """print w('''As the glow fades, you feel the floor drop from under your feet and realise you've materialised back in the weightless entrance chamber. Carl Sagan is still floating nearby. He looks up from his book.
 
@@ -228,7 +228,8 @@ dic["mainrm"][fireplace] = copy.deepcopy(dic["mainrm"][roomd])
 dic["mainrm"][roomd][0][look] = """print w('''The steel door slams shut behind you. Mercifully, you find your feet settling to the floor: normal gravity has been restored.
 
 You are in a large, central hall. Its semicylindrical shape makes it feel like a miniature aircraft hangar. At the far east end of the room, directly ahead of you, is another door with a complicated lock. Closer by there are two other doors -- one in the north wall, one in the south. You shout out 'Anybody here?': the only reply is your echo.''')
-states["mainrm"][roomd] = 1"""
+states["mainrm"][roomd] = 1
+rmshow('mainrm')"""
 dic["mainrm"][roomd][1][look] = """print w('''You are in a long, hangar-shaped room with doors to the east, west, north and south. The west door leads back to the entrance chamber. The door to the east looks important -- it appears to have a large, complicated lock.''')"""
 
 
@@ -298,7 +299,8 @@ dic["strangerm"][dirac] = copy.deepcopy(dic["strangerm"][roomd])
 dic["strangerm"][roomd][0][look] = """print w('''You close the door behind you quietly. You are in a small room with identical, featureless doors to the west, north and east. In the centre of the room, a tall, thin man with a moustache paces back and forth, muttering to himself. You recognise him as Paul Dirac.
 
 There's something altogether strange about this room, but you can't put your finger on what it is.''')
-states["strangerm"][roomd] = 1"""
+states["strangerm"][roomd] = 1
+rmshow('strangerm')"""
 dic["strangerm"][roomd][1][look] = """print w('You are in a small, strange room with identical doors to the west, north and east. In the centre of the room, Paul Dirac paces back and forth.')"""
 
 dic["strangerm"][n_door][1] = {
@@ -393,7 +395,8 @@ In the north wall is a strange-looking door -- or rather, a portal. There is no 
 'Listen,' Gell-Mann says, beckoning with one finger. 'Come over here. You have to help me.'
 
 He turns back to the opening and you consider what to do next. Is it your imagination, or do you feel sort of heavier in here?''')
-states["downrm"][roomd] = 1"""
+states["downrm"][roomd] = 1
+rmshow('downrm')"""
 dic["downrm"][roomd][1][look] = """print w('You are in a small room with a door to the east and an empty portal in the north wall. Murray Gell-Mann is hunched over near the portal. A tall wardrobe stands nearby.')"""
 dic["downrm"][roomd][2][look] = """print w('Gell-Mann stands near the portal, looking at you expectantly. The end of the rope trails over the lintel of the portal then arcs down to the ground. The wardrobe stands nearby.')"""
 dic["downrm"][roomd][3][look] = """print w('''You are in a small room with a door to the east and an empty portal in the north wall. There's an open wardrobe just near you. Murray Gell-Mann sits in the middle of the room, peering into his briefcase full of hadrons. You're glad you were able to help him out.''')"""

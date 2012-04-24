@@ -3,6 +3,7 @@
 from gametext import *
 from states import *
 from inv import *
+from smdmap import *
 from textwrap import wrap
 
 prompt = "\n> "

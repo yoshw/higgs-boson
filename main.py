@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
 
 from funcs import *
+import traceback
 
 qflag = False
 
@@ -15,11 +16,14 @@ def prompter(rm):
     elif "instr" in raw or "instruct" in raw or "instructions" in raw:
         instruct()
         return
-    elif raw == "map":
+    elif raw == ["map"]:
         print fullmap
         return
     elif "exit" in raw or "quit" in raw:
         qflag = True
+        return
+    elif raw == ["traceback"]:
+        traceback.print_stack()
         return
 
     obj = []
@@ -37,7 +41,10 @@ def prompter(rm):
     #    print "obj:", obj
 
     if len(obj) == 0:
-        print fail_txt
+        if raw == ['look']:
+            exec dic[rm][roomd][states[rm][roomd]][look]
+        else:
+            print fail_txt
         return
 
     md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
@@ -69,7 +76,7 @@ def room(rm):
         if qflag == False:
             prompter(rm)
         else:
-            print "\nGoodbye!\n"
+            print "Goodbye!\n"
             exit()
         
 print title_txt

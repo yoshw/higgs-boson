@@ -88,7 +88,7 @@ talk = ('talk', 'chat', 'jaw')
 opn = ('open', 'unwrap')
 use = ('use', 'activate')
 go = ('go', 'walk')
-combine = ('combine')
+combine = ('combine', 'blend', 'mix')
 
 roomd = ('room', 'env', 'environment')
 

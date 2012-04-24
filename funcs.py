@@ -76,22 +76,22 @@ def inv(rm):
     return
 
 def invprompter(rm):
-    raw = raw_input("\nINV >> ").lower()
+    raw = raw_input("\nINV >> ").lower().split()
 
-    if raw == "inv" or raw == "inventory":
+    if "inv" in raw or "inventory" in raw:
         invprint()
         return
-    elif raw == "instr" or raw == "instruct" or raw == "instructions":
+    elif "instr" in raw or "instruct" in raw or "instructions" in raw:
         instruct()
         return
-    elif "exit" in raw or "return" in raw:
+    elif "exit" in raw or "quit" in raw or "return" in raw:
         invq = 1
         return invq
 
     obj = []
     mode = []
 
-    ob_list = [x for x in idic.keys() if states['inv'][x] == 1]
+    ob_list = [x for x in idic.keys() if states['inv'][x] != 0]
 
     for ob in ob_list:
         for name in ob:
@@ -102,46 +102,51 @@ def invprompter(rm):
     obj = list(set(obj))
 
     if len(obj) == 0:
-        print fail_txt
+        if raw == ['look']:
+            print w("It's your trusty shoulder bag -- now doubling as an item inventory.")
+        else:
+            print fail_txt
         return
 
-    md_list = ['look','use','combine']
+    md_list = idic[obj[0]][states["inv"][obj[0]]].keys()
 
     for md in md_list:
-        if md in raw:
-            mode.append(md)
+        for name in md:
+            if name in raw:
+                mode.append(md)
 
-    if len(obj) == 1 and len(mode) == 0:
+    if len(mode) == 0:
         print "I don't understand that action."
-        return
-    elif len(obj) > 1 and len(mode) == 0:
-        print fail_txt
         return
     elif len(mode) > 1:
         print "No more than one action at a time, please."
         return
-    elif mode[0] == 'look' and len(obj) == 1:
-        exec idic[obj[0]][1]['d']
+    elif len(obj) > 1 and mode[0] != combine:
+        print fail_txt
         return
-    elif mode[0] == 'look':
-        print "You can only look at one item at a time."
+    elif mode[0] == look:
+        exec idic[obj[0]][states['inv'][obj[0]]][look]
         return
-    elif mode[0] == 'combine' and (len(obj) != 2):
-        print "You need to combine (exactly) two items."
+    elif mode[0] == combine and len(obj) != 2:
+        print "You can only combine two items. No more, no less."
         return
-    elif mode[0] == 'combine':
-        if obj[1] in idic[obj[0]][1]['combine'].keys():
-            exec idic[obj[0]][1]['combine'][obj[1]]
+    elif mode[0] == combine:
+        if obj[1] in idic[obj[0]][states['inv'][obj[0]]][combine].keys():
+            exec idic[obj[0]][states['inv'][obj[0]]][combine][obj[1]]
             return
         else:
             print "Those items can't be combined."
             return
-    elif mode[0] == 'use' and len(obj) != 1:
-        print fail_txt
-        return
+    elif mode[0] == use:
+        if len(obj) != 1:
+            print fail_txt
+            return
+        else:
+            invq = invuse(obj[0], raw, rm)
+            return invq
     else:
-        invq = invuse(obj[0], raw, rm)
-        return invq
+        exec idic[obj[0]][states['inv'][obj[0]]][mode[0]]
+        return
 
 def invuse(item, raw, rm):
     obj = []
@@ -155,14 +160,17 @@ def invuse(item, raw, rm):
     if item in obj:
         obj.remove(item)
 
+        #    print "item:", item
+        #    print "objects:", obj
+
     if len(obj) > 1:
         print fail_txt
         return 0
     elif len(obj) == 0:
         print "You need to use the %s with another (present) object." % item[0]
         return 0
-    elif obj[0] in idic[item][1]['use'].keys():
-        exec idic[item][1]['use'][obj[0]]
+    elif obj[0] in idic[item][states['inv'][item]][use].keys():
+        exec idic[item][states['inv'][item]][use][obj[0]]
         return 2
     else:
         print "You can't use the %s in that way." % item[0]

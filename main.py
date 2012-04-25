@@ -1,6 +1,10 @@
 # This Python file uses the following encoding: utf-8
 
+from gametext import *
 from funcs import *
+from states import *
+from smdmap import *
+from inv import *
 import traceback
 
 qflag = False
@@ -8,14 +12,19 @@ qflag = False
 def prompter(rm):
     global qflag
     newrm = rm
-    
+
     raw = raw_input(prmpt).lower().split()
-    # print "raw:", raw
+    ralpha = []
+    for i in range(len(raw)):
+        print i,":",raw[i]
+        if raw[i].isalpha() == True:
+            ralpha.append(raw[i])
+    print "ralpha:", ralpha
     
     if "inv" in raw or "inventory" in raw:
         inv(rm)
         return rm
-    elif "instr" in raw or "instruct" in raw or "instructions" in raw:
+    elif "help" in raw or "info" in raw or "instructions" in raw:
         instruct()
         return rm
     elif raw == ["map"]:
@@ -28,16 +37,32 @@ def prompter(rm):
         traceback.print_stack()
         return rm
 
+    item = []
     obj = []
     mode = []
 
-    ob_list = dic[rm].keys()
+    for x in idic.keys():
+        for n in x:
+            if (n in raw and states['inv'][x] != 0):
+                item.append(x)
+                #print item
 
-    for ob in ob_list:
-        for name in ob:
-            if name in raw:
-                obj.append(ob)
-    #    print "ob_list:", ob_list
+    item = list(set(item))
+    
+    if len(item) > 2:
+        print wr("Whoa, too many items there.")
+    elif len(item) == 2:
+        if raw[0] in combine:
+            print wr("You'll need to be in your inventory to combine those items.")
+        else:
+            print wr("Whoa, too many items there.")
+    elif len(item) == 1:
+        print "bla bla bla"
+
+    for x in dic[rm].keys():
+        for n in x:
+            if (n in raw and states[rm][x] != 0):
+                obj.append(x)
 
     obj = list(set(obj))
     #    print "obj:", obj
@@ -49,14 +74,13 @@ def prompter(rm):
             print fail_txt
         return rm
 
-    md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
+    #    md_list = dic[rm][obj[0]][states[rm][obj[0]]].keys()
 
-    for md in md_list:
+    for md in dic[rm][obj[0]][states[rm][obj[0]]].keys():
         for name in md:
             if name in raw:
                 mode.append(md)
     #    print "mode:", mode
-    item = [x[0] for x in idic.keys() for n in x if (n in raw and states['inv'][x] == 1)]
 
     if len(obj) == 1 and len(mode) == 0:
         print "I don't understand that action."

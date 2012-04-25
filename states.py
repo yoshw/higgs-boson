@@ -18,7 +18,6 @@ states["mainrm"] = {
     e_door: 1,
     w_door: 1,
     s_door: 1,
-    staircase: 1,
     fireplace: 1
     }
 
@@ -61,13 +60,13 @@ states["uprm"] = {
 
 states["bottomrm"] = {
     roomd: 0,
-    n_door: 1,
-    w_door: 1
+    w_door: 1,
+    stairs: 1
     }
 
 states["toprm"] = {
     roomd: 0,
-    s_door: 1
+    stairs: 1
     }
 
 
@@ -118,15 +117,15 @@ states["taurm"] = {
 #INVENTORY
 
 states["inv"] = {
+    beads: 0,
     bongos: 1,
     tripod: 0,
     up_bongos: 0,
     rope: 0,
-    teaspoon: 0,
-    "beads": {}
+    teaspoon: 0
     }
 
-states["inv"]["beads"] = {
+states[beads] = {
     'u': 0,
     'd': 0,
     'c': 0,

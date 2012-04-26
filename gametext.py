@@ -69,7 +69,9 @@ You trudge uphill through the thick, soupy fog. As you crest the hill, the mist 
 
 You brace yourself. This will not be easy. You take your water bottle from your laptop bag -- emptied out in case you need to carry anything -- and take a sip. Shoving it back in, you walk the final hundred metres to the dungeon and push open the grand steel doors."""
 
+# IGNORE LIST
 
+ignore = ['a','an','about','above','across','after','against','along','alongside','amid','amidst','among','amongst','and','around','as','at','atop','be','before','behind','below','beneath','beside','besides','between','betwixt','both','but','by','down','for','from','her','his','if','in','inside','into','it','its','just','my','nor','of','off','on','onto','or','our','out','over','past','so','than','that','the','then','this','through','till','to','toward','towards','under','underneath','until','up','upon','via','with','within','without','yet','your']
 
 # VARIABLE WORDING
 
@@ -85,6 +87,8 @@ combine = ('combine', 'blend', 'mix')
 drum = ('drum','hit','tap','play')
 pull = ('pull','yank','tug','haul','tow')
 
+modes = [get,look,talk,opn,use,go,combine,drum,pull]
+
 #roomd
 roomd = ('room', 'env', 'environment')
 
@@ -97,6 +101,9 @@ gellmann = ('murray gell-mann', 'murray', 'gell-mann', 'gellmann')
 pauli = ('wolfgang pauli', 'wolfgang', 'pauli')
 einstein = ('albert einstein', 'albert', 'einstein')
 higgs = ('peter higgs', 'peter', 'higgs')
+#hagen
+#guralnik
+#kibble
 
 #rm objects
 chair = ('chair', 'armchair', 'seat')
@@ -220,8 +227,7 @@ dic["mainrm"][n_door] = copy.deepcopy(dic["mainrm"][roomd])
 dic["mainrm"][e_door] = copy.deepcopy(dic["mainrm"][roomd])
 dic["mainrm"][w_door] = copy.deepcopy(dic["mainrm"][roomd])
 dic["mainrm"][s_door] = copy.deepcopy(dic["mainrm"][roomd])
-dic["mainrm"][stairs] = copy.deepcopy(dic["mainrm"][roomd])
-dic["mainrm"][fireplace] = copy.deepcopy(dic["mainrm"][roomd])
+#dic["mainrm"][fireplace] = copy.deepcopy(dic["mainrm"][roomd])
 
 
 dic["mainrm"][roomd][0][look] = """print wr('''The steel door slams shut behind you. Mercifully, you find your feet settling to the floor: normal gravity has been restored.

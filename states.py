@@ -18,7 +18,7 @@ states["mainrm"] = {
     e_door: 1,
     w_door: 1,
     s_door: 1,
-    fireplace: 1
+    #    fireplace: 1
     }
 
 #QUARKS
@@ -122,7 +122,7 @@ states["inv"] = {
     tripod: 0,
     up_bongos: 0,
     rope: 0,
-    teaspoon: 0
+    teaspoon: 1
     }
 
 states[beads] = {

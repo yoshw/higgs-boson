@@ -167,15 +167,11 @@ def invprompter(rm):
 
 def invuse(item, raw, rm):
     obj = []
-    ob_list = dic[rm].keys()
-    for ob in ob_list:
-        for name in ob:
-            if name in raw:
-                obj.append(ob)
+    for x in dic[rm].keys():
+        for n in x:
+            if states[rm][x] != 0 and n in raw:
+                obj.append(x)
     obj = list(set(obj))
-
-    if item in obj:
-        obj.remove(item)
 
         #    print "item:", item
         #    print "objects:", obj
@@ -184,8 +180,12 @@ def invuse(item, raw, rm):
         print fail_txt
         return 0
     elif len(obj) == 0:
-        print "You need to use the %s with another (present) object." % item[0]
-        return 0
+        if roomd in idic[item][states['inv'][item]][use].keys():
+            exec idic[item][states['inv'][item]][use][roomd]
+            return 2
+        else:
+            print "You need to use the %s with another (present) object." % item[0]
+            return 0
     elif obj[0] in idic[item][states['inv'][item]][use].keys():
         exec idic[item][states['inv'][item]][use][obj[0]]
         return 2

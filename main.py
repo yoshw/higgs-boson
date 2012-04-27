@@ -124,8 +124,6 @@ def prompteralt(rm):
         if raw[i].isalpha() == True and not raw[i] in ignore:
             ralpha.append(raw[i])
     print "ralpha:", ralpha
-
-    # remove ignored words here!
     
     if "inv" in raw or "inventory" in raw:
         inv(rm)
@@ -157,7 +155,7 @@ def prompteralt(rm):
     print "mode:", mode
 
     if len(mode) == 0:
-        print "You have to enter an action word I can understand."
+        print "You have to include an action word I understand."
         return rm
     elif len(mode) > 1:
         print "No more than one action at a time, thanks."
@@ -165,10 +163,12 @@ def prompteralt(rm):
     elif not (ralpha[0] in mode[0]):
         print wr("Your command must start with an action word.")
         return rm
+    elif mode[0] == combine:
+        print wr("You need to open your inventory to combine items.")
+        return rm
 
     for x in ralpha[1:]:
-        iflag = 0
-        oflag = 0
+        iflag = oflag = 0
         for n in idic.keys():
             if states['inv'][n] != 0 and x in n:
                 item.append(n)
@@ -186,6 +186,14 @@ def prompteralt(rm):
     obj = list(set(obj))
     print "obj:", obj
     print "item:", item
+
+    dlist = []
+    for o in range(len(obj)):
+        for i in range(len(item)):
+            if obj[o] == item[i]:
+                dlist.append(o)
+    for x in dlist:
+        del obj[x]
 
     if len(item) > 1:
         print fail_txt
@@ -211,22 +219,6 @@ def prompteralt(rm):
 
     exec dic[rm][obj[0]][states[rm][obj[0]]][mode[0]]
     return newrm
-    
-"""
-    for x in idic.keys():
-        for n in x:
-            if (n in ralpha and states['inv'][x] != 0):
-                item.append(x)
-    item = list(set(item))
-    print "item:", item
-
-    for x in dic[rm].keys():
-        for n in x:
-            if (n in ralpha and states[rm][x] != 0):
-                obj.append(x)
-    obj = list(set(obj))
-    print "obj:", obj
-"""
 
         
 print title_txt

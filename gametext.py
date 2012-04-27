@@ -5,7 +5,7 @@ import copy
 prmpt = "\n >> "
 invprmpt = "\nINV >> "
 
-fail_txt = "I'm sorry, I don't understand that."
+fail_txt = "I'm sorry, I don't follow you."
 
 title_txt = """
 ===================================================
@@ -71,7 +71,7 @@ You brace yourself. This will not be easy. You take your water bottle from your 
 
 # IGNORE LIST
 
-ignore = ['a','an','about','above','across','after','against','along','alongside','amid','amidst','among','amongst','and','around','as','at','atop','be','before','behind','below','beneath','beside','besides','between','betwixt','both','but','by','down','for','from','her','his','if','in','inside','into','it','its','just','my','nor','of','off','on','onto','or','our','out','over','past','so','than','that','the','then','this','through','till','to','toward','towards','under','underneath','until','up','upon','via','with','within','without','yet','your']
+ignore = ['a','an','about','above','across','after','against','along','alongside','amid','amidst','among','amongst','and','around','as','at','atop','be','before','behind','below','beneath','beside','besides','between','betwixt','both','but','by','down','for','from','her','his','if','in','inside','into','it','its','just','my','nor','of','off','on','onto','or','our','out','over','past','so','than','that','the','them','then','this','those','through','till','to','toward','towards','under','underneath','until','up','upon','via','with','within','without','yet','your']
 
 # VARIABLE WORDING
 
@@ -88,6 +88,7 @@ drum = ('drum','hit','tap','play')
 pull = ('pull','yank','tug','haul','tow')
 
 modes = [get,look,talk,opn,use,go,combine,drum,pull]
+invmodes = [look,use,combine,drum]
 
 #roomd
 roomd = ('room', 'env', 'environment')

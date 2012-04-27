@@ -3,6 +3,7 @@
 from gametext import *
 from states import *
 from funcs import *
+import string
 
 # Inv Boilerplate
 
@@ -87,49 +88,56 @@ def inv(rm):
 
     invq = 0
     while invq != 1 and invq != 2:
-        invq = invprompter(rm)
+        invq = invpromptalt(rm)
     if invq == 1:
         print "You close your bag and sling it back over your shoulder."
     return
 
 def invprompter(rm):
     raw = raw_input(invprmpt).lower().split()
+    ralpha = []
+    for i in range(len(raw)):
+        #        print i,":",raw[i]
+        raw[i] = raw[i].translate(None,string.punctuation)
+        if raw[i].isalpha() == True and not raw[i] in ignore:
+            ralpha.append(raw[i])
+    print "ralpha:", ralpha
 
-    if "inv" in raw or "inventory" in raw:
+    if "inv" in ralpha or "inventory" in ralpha:
         invprint()
         return
-    elif "help" in raw or "info" in raw or "instructions" in raw:
+    elif "help" in ralpha or "info" in ralpha or "instructions" in ralpha:
         instruct()
         return
-    elif "exit" in raw or "quit" in raw or "return" in raw:
-        invq = 1
-        return invq
+    elif raw == ["map"] or raw == ["save"]:
+        print wr("You can't do that from inside your inventory.")
+        return
+    elif "exit" in ralpha or "quit" in ralpha or "return" in ralpha:
+        return 1
 
-    obj = []
+    item = []
     mode = []
 
-    ob_list = [x for x in idic.keys() if states['inv'][x] != 0]
+    item_list = [x for x in idic.keys() if states['inv'][x] != 0]
 
-    for ob in ob_list:
-        for name in ob:
-            if name in raw:
-                obj.append(ob)
-                #    print "invob_list:", ob_list
+    for i in item_list:
+        for name in i:
+            if name in ralpha:
+                item.append(i)
+                #    print "item_list:", item_list
 
-    obj = list(set(obj))
+    item = list(set(item))
 
-    if len(obj) == 0:
-        if raw == ['look']:
+    if len(item) == 0:
+        if ralpha == ['look']:
             print wr("It's your trusty shoulder bag -- now doubling as an item inventory.")
         else:
             print fail_txt
         return
 
-    md_list = idic[obj[0]][states["inv"][obj[0]]].keys()
-
-    for md in md_list:
+    for md in idic[item[0]][states["inv"][item[0]]].keys():
         for name in md:
-            if name in raw:
+            if name in ralpha:
                 mode.append(md)
 
     if len(mode) == 0:
@@ -138,32 +146,134 @@ def invprompter(rm):
     elif len(mode) > 1:
         print "No more than one action at a time, please."
         return
-    elif len(obj) > 1 and mode[0] != combine:
+    elif len(item) > 1 and mode[0] != combine:
         print fail_txt
         return
     elif mode[0] == look:
-        exec idic[obj[0]][states['inv'][obj[0]]][look]
+        exec idic[item[0]][states['inv'][item[0]]][look]
         return
-    elif mode[0] == combine and len(obj) != 2:
+    elif mode[0] == combine and len(item) != 2:
         print "You can only combine two items. No more, no less."
         return
     elif mode[0] == combine:
-        if obj[1] in idic[obj[0]][states['inv'][obj[0]]][combine].keys():
-            exec idic[obj[0]][states['inv'][obj[0]]][combine][obj[1]]
+        if item[1] in idic[item[0]][states['inv'][item[0]]][combine].keys():
+            exec idic[item[0]][states['inv'][item[0]]][combine][item[1]]
             return
         else:
             print "Those items can't be combined."
             return
     elif mode[0] == use:
-        if len(obj) != 1:
+        if len(item) != 1:
             print fail_txt
             return
         else:
-            invq = invuse(obj[0], raw, rm)
+            invq = invuse(item[0], ralpha, rm)
             return invq
     else:
-        exec idic[obj[0]][states['inv'][obj[0]]][mode[0]]
+        exec idic[item[0]][states['inv'][item[0]]][mode[0]]
         return
+
+def invpromptalt(rm):
+    invq = 0
+    
+    raw = raw_input(invprmpt).lower().split()
+    ralpha = []
+    for i in range(len(raw)):
+        #        print i,":",raw[i]
+        raw[i] = raw[i].translate(None,string.punctuation)
+        if raw[i].isalpha() == True and not raw[i] in ignore:
+            ralpha.append(raw[i])
+    print "ralpha:", ralpha
+
+    if "inv" in ralpha or "inventory" in ralpha:
+        invprint()
+        return
+    elif "help" in ralpha or "info" in ralpha or "instructions" in ralpha:
+        instruct()
+        return
+    elif raw == ["map"] or raw == ["save"]:
+        print wr("You can't do that from inside your inventory.")
+        return
+    elif "exit" in ralpha or "quit" in ralpha or "return" in ralpha:
+        return 1
+
+    item = []
+    mode = []
+
+    for x in invmodes:
+        for n in x:
+            if n in ralpha:
+                mode.append(x)
+    print "mode:",mode
+
+    if len(mode) == 0:
+        print "You have to include an action word I understand."
+        return
+    elif len(mode) > 1:
+        print "No more than one action at a time, thanks."
+        return
+    elif not (ralpha[0] in mode[0]):
+        print wr("Your command must start with an action word.")
+        return
+
+    for x in ralpha[1:]:
+        iflag = oflag = 0
+        for n in idic.keys():
+            if states['inv'][n] != 0 and x in n:
+                item.append(n)
+                iflag = 1
+        for n in dic[rm].keys():
+            if states[rm][n] != 0 and x in n:
+                oflag = 1
+        if iflag == 0 and oflag == 0:
+            print "I only understood you as far as wanting to %s." % ralpha[0]
+            print "offender:",x
+            return rm
+
+    item = list(set(item))
+    print "item:",item
+
+    if len(item) == 0:
+        if ralpha == ['look']:
+            print wr("It's your trusty shoulder bag -- now doubling as an item inventory.")
+        else:
+            print fail_txt
+        return
+
+    if len(item) > 2:
+        print fail_txt
+        return
+
+    if len(item) == 2:
+        if mode[0] == combine:
+            if item[1] in idic[item[0]][states['inv'][item[0]]][combine].keys():
+                exec idic[item[0]][states['inv'][item[0]]][combine][item[1]]
+                return
+            else:
+                print "Those items can't be combined."
+                return
+        else:
+            print fail_txt
+            return
+
+    # we now know that len[item] == 1
+
+    if mode[0] == combine:
+        print "You need two items to combine."
+        return    
+    elif mode[0] == look:
+        exec idic[item[0]][states['inv'][item[0]]][look]
+        return
+    elif mode[0] == use:
+        invq = invuse(item[0], ralpha, rm)
+        return invq
+    else:
+        if mode[0] in idic[item[0]][states['inv'][item[0]]].keys():
+            exec idic[item[0]][states['inv'][item[0]]][mode[0]]
+            return invq
+        else:
+            print fail_txt
+            return
 
 def invuse(item, raw, rm):
     obj = []
@@ -178,20 +288,23 @@ def invuse(item, raw, rm):
 
     if len(obj) > 1:
         print fail_txt
-        return 0
+        return
+    elif not rm in idic[item][states['inv'][item]][use].keys():
+        print "You can't use the %s in that way." % item[0]
+        return
     elif len(obj) == 0:
-        if roomd in idic[item][states['inv'][item]][use].keys():
-            exec idic[item][states['inv'][item]][use][roomd]
+        if roomd in idic[item][states['inv'][item]][use][rm].keys():
+            exec idic[item][states['inv'][item]][use][rm][roomd]
             return 2
         else:
             print "You need to use the %s with another (present) object." % item[0]
-            return 0
-    elif obj[0] in idic[item][states['inv'][item]][use].keys():
-        exec idic[item][states['inv'][item]][use][obj[0]]
+            return
+    elif obj[0] in idic[item][states['inv'][item]][use][rm].keys():
+        exec idic[item][states['inv'][item]][use][rm][obj[0]]
         return 2
     else:
         print "You can't use the %s in that way." % item[0]
-        return 0
+        return
 
 
 ## Inventory Dic
@@ -224,35 +337,35 @@ print '''
 idic[beads][1][use] = "print wr('''You can't use them yet.''')"
 
 idic[bongos][1][look] = "print wr('A set of cheap bongos with blue and red stars painted on the side.')"
-idic[bongos][1][use] = {
-    feynman: """print wr('''You pull the bongos out of your bag. Feynman's eyes light up and he jumps from his chair.
+idic[bongos][1][use] = {'muneurm':{},'inv':{}}
+idic[bongos][1][use]['muneurm'][feynman] = """print wr('''You pull the bongos out of your bag. Feynman's eyes light up and he jumps from his chair.
 
 'Hey, brilliant! I love the bongos.' He takes the drums off you, and turns them over in his hands. 'But wait a second.' He cocks his head to one side. 'I can't play these. There's no stand. You can't play the drums sitting down. You gotta move your body, that's where the rhythm comes from.' He hands the drums back to you and returns to his seat.''')"""
-    }
 idic[bongos][1][combine] = {
     tripod: """print wr('You jam the bongos down onto the top of the tripod. Not a perfect fit, but it holds firm. You now have a serviceable set of upright bongos.')
 states['inv'][bongos] = 0
 states['inv'][tripod] = 0
 states['inv'][up_bongos] = 1"""
     }
-idic[bongos][1][use][tripod] = copy.deepcopy(idic[bongos][1][combine][tripod])
-idic[bongos][1][drum] = "print wr('''You try tapping out a rhythm on the bongos, but resign yourself to the fact that you'll never be any good.''')"
+idic[bongos][1][use]['inv'][tripod] = copy.deepcopy(idic[bongos][1][combine][tripod])
+idic[bongos][1][drum] = """print wr('''You try tapping out a rhythm on the bongos, but resign yourself to the fact that you'll never be any good.''')"""
+
 
 idic[tripod][1][look] = "print wr('A rusty old tripod.')"
-idic[tripod][1][use] = {
-    feynman: """print wr("'Why the hell are you showing me this?' Feynman scowls.")"""
-    }
+idic[tripod][1][use] = {'muneurm':{},'inv':{}}
+idic[tripod][1][use]['muneurm'][feynman] = """print wr("'Why the hell are you showing me this?' Feynman scowls.")"""
 idic[tripod][1][combine] = {
     bongos: """print wr('You jam the bongos down onto the top of the tripod. Not a perfect fit, but it holds firm. You now have a serviceable set of upright bongos.')
 states['inv'][bongos] = 0
 states['inv'][tripod] = 0
 states['inv'][up_bongos] = 1"""
     }
-idic[tripod][1][use][bongos] = copy.deepcopy(idic[tripod][1][combine][bongos])
+idic[tripod][1][use]['inv'][bongos] = copy.deepcopy(idic[tripod][1][combine][bongos])
+
 
 idic[up_bongos][1][look] = "print wr('A cheap pair of bongos wedged onto the top of a rusty old tripod.')"
-idic[up_bongos][1][use] = {
-    feynman: """print wr('''You pull the bongos out of your bag. Feynman's eyes light up and he jumps from his chair.
+idic[up_bongos][1][use] = {'muneurm':{},'inv':{}}
+idic[up_bongos][1][use]['muneurm'][feynman] = """print wr('''You pull the bongos out of your bag. Feynman's eyes light up and he jumps from his chair.
 
 'Hey, brilliant! I love the bongos.' He takes the drums off you, extends the legs of the tripod, and sets it on the ground. 'Watch this, fella,' he says, and begins to play. The music is odd. But he's well and truly distracted, so you can finally get through that door.''')
 states['muneurm'][feynman] = 3
@@ -260,20 +373,20 @@ states['muneurm'][s_door] = 2
 states['muneurm'][e_door] = 2
 states['muneurm'][w_door] = 2
 states['inv'][up_bongos] = 0"""
-    }
+
 
 idic[rope][1][look] = "print wr('A long coil of rope.')"
-idic[rope][1][use] = {
-    gellmann: """print wr("'Great,' Gell-Mann says, 'so you got yourself a rope. Now what?'")""",
-    hadrons: """print wr("You attach one end of the rope to the handle of the briefcase, using a highly secure knot passed down to you by your father (now deceased).")
+idic[rope][1][use] = {'downrm':{},'uprm':{}}
+idic[rope][1][use]['downrm'][gellmann] = """print wr("'Great,' Gell-Mann says, 'so you got yourself a rope. Now what?'")"""
+idic[rope][1][use]['uprm'][hadrons] = """print wr("You attach one end of the rope to the handle of the briefcase, using a highly secure knot passed down to you by your father (now deceased).")
 states["inv"][rope] = 0
 states['downrm'][rope] = 3
 states['downrm'][gellmann] = 3
 states['downrm'][roomd] = 2
 states['uprm'][hadrons] = 2
 states['uprm'][rope] = 1"""
-    }
+
 
 idic[teaspoon][1][look] = "print wr('A silver teaspoon.')"
-idic[teaspoon][1][use] = {
-    }
+idic[teaspoon][1][use] = {'strangerm':{}}
+idic[teaspoon][1][use]['strangerm'][roomd] = "print wr('''A magical feeling comes over you as you wave the teaspoon around the room. Dirac is unimpressed.''')"

@@ -122,7 +122,7 @@ states["inv"] = {
     tripod: 0,
     up_bongos: 0,
     rope: 0,
-    teaspoon: 1
+    teaspoon: 0
     }
 
 states[beads] = {

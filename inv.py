@@ -88,102 +88,22 @@ def inv(rm):
 
     invq = 0
     while invq != 1 and invq != 2:
-        invq = invpromptalt(rm)
+        invq = invprompter(rm)
     if invq == 1:
         print "You close your bag and sling it back over your shoulder."
     return
 
 def invprompter(rm):
-    raw = raw_input(invprmpt).lower().split()
-    ralpha = []
-    for i in range(len(raw)):
-        #        print i,":",raw[i]
-        raw[i] = raw[i].translate(None,string.punctuation)
-        if raw[i].isalpha() == True and not raw[i] in ignore:
-            ralpha.append(raw[i])
-    print "ralpha:", ralpha
-
-    if "inv" in ralpha or "inventory" in ralpha:
-        invprint()
-        return
-    elif "help" in ralpha or "info" in ralpha or "instructions" in ralpha:
-        instruct()
-        return
-    elif raw == ["map"] or raw == ["save"]:
-        print wr("You can't do that from inside your inventory.")
-        return
-    elif "exit" in ralpha or "quit" in ralpha or "return" in ralpha:
-        return 1
-
-    item = []
-    mode = []
-
-    item_list = [x for x in idic.keys() if states['inv'][x] != 0]
-
-    for i in item_list:
-        for name in i:
-            if name in ralpha:
-                item.append(i)
-                #    print "item_list:", item_list
-
-    item = list(set(item))
-
-    if len(item) == 0:
-        if ralpha == ['look']:
-            print wr("It's your trusty shoulder bag -- now doubling as an item inventory.")
-        else:
-            print fail_txt
-        return
-
-    for md in idic[item[0]][states["inv"][item[0]]].keys():
-        for name in md:
-            if name in ralpha:
-                mode.append(md)
-
-    if len(mode) == 0:
-        print "I don't understand that action."
-        return
-    elif len(mode) > 1:
-        print "No more than one action at a time, please."
-        return
-    elif len(item) > 1 and mode[0] != combine:
-        print fail_txt
-        return
-    elif mode[0] == look:
-        exec idic[item[0]][states['inv'][item[0]]][look]
-        return
-    elif mode[0] == combine and len(item) != 2:
-        print "You can only combine two items. No more, no less."
-        return
-    elif mode[0] == combine:
-        if item[1] in idic[item[0]][states['inv'][item[0]]][combine].keys():
-            exec idic[item[0]][states['inv'][item[0]]][combine][item[1]]
-            return
-        else:
-            print "Those items can't be combined."
-            return
-    elif mode[0] == use:
-        if len(item) != 1:
-            print fail_txt
-            return
-        else:
-            invq = invuse(item[0], ralpha, rm)
-            return invq
-    else:
-        exec idic[item[0]][states['inv'][item[0]]][mode[0]]
-        return
-
-def invpromptalt(rm):
     invq = 0
     
     raw = raw_input(invprmpt).lower().split()
     ralpha = []
     for i in range(len(raw)):
-        #        print i,":",raw[i]
+#        print i,":",raw[i]
         raw[i] = raw[i].translate(None,string.punctuation)
         if raw[i].isalpha() == True and not raw[i] in ignore:
             ralpha.append(raw[i])
-    print "ralpha:", ralpha
+#    print "ralpha:", ralpha
 
     if "inv" in ralpha or "inventory" in ralpha:
         invprint()
@@ -204,7 +124,7 @@ def invpromptalt(rm):
         for n in x:
             if n in ralpha:
                 mode.append(x)
-    print "mode:",mode
+#    print "mode:",mode
 
     if len(mode) == 0:
         print "You have to include an action word I understand."
@@ -227,11 +147,11 @@ def invpromptalt(rm):
                 oflag = 1
         if iflag == 0 and oflag == 0:
             print "I only understood you as far as wanting to %s." % ralpha[0]
-            print "offender:",x
+#            print "offender:",x
             return rm
 
     item = list(set(item))
-    print "item:",item
+#    print "item:",item
 
     if len(item) == 0:
         if ralpha == ['look']:
@@ -251,6 +171,13 @@ def invpromptalt(rm):
                 return
             else:
                 print "Those items can't be combined."
+                return
+        elif mode[0] == use:
+            if item[1] in idic[item[0]][states['inv'][item[0]]][use]['inv'].keys():
+                exec idic[item[0]][states['inv'][item[0]]][use]['inv'][item[1]]
+                return
+            else:
+                print fail_txt
                 return
         else:
             print fail_txt
@@ -317,6 +244,11 @@ idic[beads] = {
     2: {}
     }
 
+idic[key_bt] = copy.deepcopy(idic[beads])
+
+idic[bottle] = copy.deepcopy(idic[beads])
+idic[powder] = copy.deepcopy(idic[beads])
+idic[energydrink] = copy.deepcopy(idic[beads])
 idic[bongos] = copy.deepcopy(idic[beads])
 idic[tripod] = copy.deepcopy(idic[beads])
 idic[up_bongos] = copy.deepcopy(idic[beads])
@@ -335,6 +267,80 @@ print '''
 '''
 """
 idic[beads][1][use] = "print wr('''You can't use them yet.''')"
+
+
+idic[key_bt][1][look] = "print wr('''An old steel key that opens the trapdoor in the bottom room.''')"    
+idic[key_bt][1][use] = {'bottomrm':{},'toprm':{}}
+idic[key_bt][1][use]['bottomrm'][trapdoor] = """print wr('''With a satisfying, metallic thunk, the key turns in the lock of the trapdoor. You push the trapdoor up -- it's damn heavy! -- and it swings wide open.
+
+Pauli beckons you and you run down the stairs. 'Great stuff, friend!' he says. 'Now get yourself up there and grab my energy drink powder. It's under my bed.' ''')
+states['inv'][key_bt] = 0
+states['bottomrm'][trapdoor] = 4
+states['bottomrm'][stairs] = 4
+states['bottomrm'][upstairs] = 4
+states['bottomrm'][downstairs] = 1
+states['bottomrm'][pauli] = 3
+states['bottomrm'][roomd] = 2"""
+
+idic[bottle][1][look] = "print wr('Your trusty BPA- and phthalate-free metal water bottle, topped up with clear, ice-cold water.')"
+idic[bottle][1][use] = {'bottomrm':{},'downrm':{},'charmrm':{},'strangerm':{},'muneurm':{},'inv':{}}
+idic[bottle][1][use]['muneurm'][feynman] = """print wr('''You offer Feynman your water bottle, but he turns his nose up. 'What is this, water?' he asks. 'Don't you have anything harder?' ''')"""
+idic[bottle][1][use]['downrm'][gellmann] = """print wr('''You offer Gell-Mann your water bottle. 'Oh, thank you,' he says. 'That's kind, but I'm not really thirsty.' ''')"""
+idic[bottle][1][use]['charmrm'][sagan] = """print wr('''You offer Sagan your water bottle. He turns it over in his hands, an enigmatic smile playing on his lips. 'Water is a truly fascinating substance,' he says. 'Don't you agree?' ''')"""
+idic[bottle][1][use]['strangerm'][dirac] = """print wr('''You offer Dirac your water bottle. He sniffs loudly. He won't even look at you.''')"""
+idic[bottle][1][use]['bottomrm'][pauli] = """print wr('''You offer Pauli your water bottle. He accepts it gratefully and takes a swig. 'Thank you,' he says, wiping his mouth. 'That's very good. But what I really need, you know, is some StrongForce!' ''')"""
+idic[bottle][1][combine] = {
+    powder: """print wr('You pour the StrongForce powder into your bottle and swirl it around some. You hear an energetic fizzing coming from the bottle. Perfect.')
+states['inv'][bottle] = 0
+states['inv'][powder] = 0
+states['inv'][energydrink] = 1"""
+    }
+idic[bottle][1][use]['inv'][powder] = copy.deepcopy(idic[bottle][1][combine][powder])
+idic[bottle][1][drink] = "print wr('Aahh ... nothing like a refreshing drink of cold, clear H20.')"
+idic[bottle][2] = copy.deepcopy(idic[bottle][1])
+idic[bottle][2][look] = "print wr('Your trusty BPA- and phthalate-free metal water bottle, now empty.')"
+idic[bottle][2][use] = {}
+idic[bottle][2][combine] = {}
+idic[bottle][2][drink] = "print wr('''It's empty now, I'm afraid. You'll have to go thirsty.''')"
+
+
+idic[powder][1][look] = "print wr('Precisely four teaspoons of StrongForce energy drink powder.')"
+idic[powder][1][use] = {'bottomrm':{},'inv':{}}
+idic[powder][1][use]['bottomrm'][pauli] = """print wr('''Pauli lights up when he sees you have the powder.
+
+'Wonderful!' he says. 'But now the problem is, it can only be taken in liquid form. The powder does me no good whatsoever. So I must ask you to do a little more work for me, and bring me the drink.' ''')"""
+idic[powder][1][combine] = {
+    bottle: """print wr('You pour the StrongForce powder into your bottle and swirl it around some. You hear an energetic fizzing coming from the bottle. Perfect.')
+states['inv'][bottle] = 0
+states['inv'][powder] = 0
+states['inv'][energydrink] = 1"""
+    }
+idic[powder][1][use]['inv'][bottle] = copy.deepcopy(idic[powder][1][combine][bottle])
+
+
+idic[energydrink][1][look] = "print wr('A water bottle full of StrongForce energy drink, fizzing away.')"
+idic[energydrink][1][use] = {'bottomrm':{},'strangerm':{},'downrm':{}}
+idic[energydrink][1][use]['bottomrm'][pauli] = """print wr('''Pauli's face fills with glee.
+
+'This is truly splendid!' he says. 'Nothing gets me going like StrongForce!'
+
+He takes the bottle from you, unscrews the lid, and downs the contents in one long gulp. He wipes his mouth and throws the bottle back to you.
+
+'Yes, oh yes! Feel the surge!' he says. He shivers, bounces up and down on the spot a couple of times, then making something approaching a war cry, he bounds up the steep staircase with ease.
+
+He disappears through the trapdoor. A few moments pass, in which you can hear rustling from upstairs. You scratch your elbow. Then Pauli's voice floats down from above:
+
+'Before you leave, friend, why don't you pop up here. I have something to give you for your hard work.' ''')
+states['inv'][energydrink] = 0
+states['inv'][bottle] = 2
+states['bottomrm'][pauli] =
+states['toprm'][pauli] =
+etc. etc.
+"""
+idic[energydrink][1][use]['downrm'][gellmann] = """print wr('''You offer Gell-Mann the energy drink. 'Oh, thank you,' he says. 'But I really have as much energy as I need.' ''')"""
+idic[energydrink][1][use]['strangerm'][dirac] = """print wr('''You offer Dirac the energy drink. His eyes widen. 'What is this!' he shouts. 'Some kind of insult? Fiend!' ''')"""
+idic[energydrink][1][drink] = "print wr('''You'd better not drink it. That would make Pauli very unhappy.''')"
+
 
 idic[bongos][1][look] = "print wr('A set of cheap bongos with blue and red stars painted on the side.')"
 idic[bongos][1][use] = {'muneurm':{},'inv':{}}
@@ -376,7 +382,7 @@ states['inv'][up_bongos] = 0"""
 
 
 idic[rope][1][look] = "print wr('A long coil of rope.')"
-idic[rope][1][use] = {'downrm':{},'uprm':{}}
+idic[rope][1][use] = {'downrm':{},'uprm':{},'inv':{}}
 idic[rope][1][use]['downrm'][gellmann] = """print wr("'Great,' Gell-Mann says, 'so you got yourself a rope. Now what?'")"""
 idic[rope][1][use]['uprm'][hadrons] = """print wr("You attach one end of the rope to the handle of the briefcase, using a highly secure knot passed down to you by your father (now deceased).")
 states["inv"][rope] = 0
@@ -388,5 +394,5 @@ states['uprm'][rope] = 1"""
 
 
 idic[teaspoon][1][look] = "print wr('A silver teaspoon.')"
-idic[teaspoon][1][use] = {'strangerm':{}}
+idic[teaspoon][1][use] = {'strangerm':{},'inv':{}}
 idic[teaspoon][1][use]['strangerm'][roomd] = "print wr('''A magical feeling comes over you as you wave the teaspoon around the room. Dirac is unimpressed.''')"

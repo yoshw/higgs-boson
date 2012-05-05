@@ -61,12 +61,28 @@ states["uprm"] = {
 states["bottomrm"] = {
     roomd: 0,
     w_door: 1,
-    stairs: 1
+    stairs: 1,
+    pauli: 1,
+    trapdoor: 1,
+    upstairs: 1,
+    downstairs: 1
     }
 
 states["toprm"] = {
     roomd: 0,
-    stairs: 1
+    stairs: 1,
+    trapdoor: 1,
+    downstairs: 1,
+    bed: 1,
+    chest: 0,
+    powder: 0,
+    chair: 1,
+    desk: 1,
+    drawer: 0,
+    floorlamp: 1,
+    drapes: 1,
+    window: 1,
+    pauli: 0
     }
 
 
@@ -113,16 +129,41 @@ states["taurm"] = {
     w_door: 1
     }
 
+# BOSONS
+
+states["photonrm"] = {
+    roomd: 0
+    }
+
+states["gluonrm"] = {
+    roomd: 0
+    }
+
+states["Zrm"] = {
+    roomd: 0
+    }
+
+states["Wrm"] = {
+    roomd: 0
+    }
+
+states["higgsrm"] = {
+    roomd: 0
+    }
 
 #INVENTORY
 
 states["inv"] = {
     beads: 0,
+    key_bt: 0,
+    bottle: 1,
+    powder: 1,
+    energydrink: 0,
     bongos: 1,
     tripod: 0,
     up_bongos: 0,
     rope: 0,
-    teaspoon: 0
+    teaspoon: 0    
     }
 
 states[beads] = {

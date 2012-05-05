@@ -71,7 +71,7 @@ You brace yourself. This will not be easy. You take your water bottle from your 
 
 # IGNORE LIST
 
-ignore = ['a','an','about','above','across','after','against','along','alongside','amid','amidst','among','amongst','and','around','as','at','atop','be','before','behind','below','beneath','beside','besides','between','betwixt','both','but','by','down','for','from','her','his','if','in','inside','into','it','its','just','my','nor','of','off','on','onto','or','our','out','over','past','so','than','that','the','them','then','this','those','through','till','to','toward','towards','under','underneath','until','up','upon','via','with','within','without','yet','your']
+ignore = ['a','an','about','above','across','after','against','along','alongside','amid','amidst','among','amongst','and','around','as','at','atop','be','before','behind','beside','besides','between','betwixt','both','but','by','for','from','her','his','if','in','inside','into','it','its','just','my','nor','of','off','on','onto','or','our','out','over','past','so','than','that','the','them','then','this','those','through','till','to','toward','towards','until','upon','via','with','within','without','yet','your']
 
 # VARIABLE WORDING
 
@@ -86,9 +86,12 @@ combine = ('combine', 'blend', 'mix')
 
 drum = ('drum','hit','tap','play')
 pull = ('pull','yank','tug','haul','tow')
+drink = ('drink','lap','sip','gulp','swig','quaff')
+recline = ('lie','recline','repose','lounge','loll','sprawl')
+shut = ('shut','close')
 
-modes = [get,look,talk,opn,use,go,combine,drum,pull]
-invmodes = [look,use,combine,drum]
+modes = [get,look,talk,opn,use,go,combine,drum,pull,drink,recline,shut]
+invmodes = [look,use,combine,drum,drink]
 
 #roomd
 roomd = ('room', 'env', 'environment')
@@ -110,15 +113,31 @@ higgs = ('peter higgs', 'peter', 'higgs')
 chair = ('chair', 'armchair', 'seat')
 fireplace = ('fireplace', 'fire', 'grate', 'hearth')
 hadrons = ('briefcase full of hadrons', 'briefcase', 'case', 'hadrons')
+bed = ('bed', 'the sack')
+chest = ('chest','strongbox','box','case')
+desk = ('desk','bureau')
+drawer = ('drawer','desk drawer')
+floorlamp = ('floor lamp','lamp','lampstand','light')
+drapes = ('drapes','curtains','drapery','blinds')
+window = ('window','aperture')
+
 
 #inv objects
 beads = ('beads','jewels','stones')
+bottle = ('water bottle','waterbottle','water','bottle')
+powder = ('StrongForce powder','powder','strongforce')
+energydrink = ('StrongForce drink','strongforce','energy','drink','bottle')
 bongos = ('bongos', 'drum', 'drums')
 tripod = ('tripod', 'camera tripod', 'camera stand')
 up_bongos = ('upright bongos', 'bongos', 'upright')
 wardrobe = ('wardrobe', 'robe', 'cupboard', 'chest of drawers')
 rope = ('rope', 'bale', 'cord', 'coil', 'cable')
 teaspoon = ('teaspoon', 'spoon')
+
+#beads
+
+#keys
+key_bt = ('trapdoor key','trapdoorkey','trapkey','bottomkey','topkey')    
 
 #nav objects
 door = ('door', 'portal')
@@ -127,7 +146,10 @@ n_door = ('north door', 'north', 'n')
 e_door = ('east door', 'east', 'e')
 w_door = ('west door', 'west', 'w')
 s_door = ('south door', 'south', 's')
-stairs = ('staircase', 'stairs', 'stairway')
+stairs = ('staircase', 'stairs', 'stairway','steps')
+trapdoor = ('trapdoor','trap')
+upstairs = ('upstairs','up')
+downstairs = ('downstairs','down')
 
 # MAIN DICTIONARY
 
@@ -204,7 +226,7 @@ dic["entryrm"][sagan][1] = {
     look: "print wr('Carl Sagan: astrophysicist, science communicator, gentleman. Dressed in corduroy. A wry smile plays on his face.')",
     talk: "print wr('''Sagan smiles benevolently. 'No point talking to me, friend. I don't have the boson. I suggest you try going through this door to the next room. Seems the logical thing to do.' ''')",
     opn: "print wr('''That's just rude.''')",
-    use: "print wr('''You can't do that.''')",
+    use: "print wr('''That would be wrong.''')",
     get: "print wr('''Does anyone really 'get' Carl Sagan?''')"
     }
 dic["entryrm"][sagan][2] = copy.deepcopy(dic["entryrm"][sagan][1])
@@ -274,14 +296,6 @@ newrm = 'entryrm'""",
     }
 dic["mainrm"][w_door][1][use] = dic["mainrm"][w_door][1][go] = copy.deepcopy(dic["mainrm"][w_door][1][opn])
 
-"""dic["mainrm"][staircase][1] = {
-    look: "print wr('A spiral staircase. It must have hundreds of steps.')",
-    talk: "print wr('That will not work.')",
-    opn: "print wr('Try using it instead.')",
-    use: "print wr('Off we go to visit the upper level!')",
-    get: "print wr('''Hey, you can't do that.''')"
-    }"""
-
 
 # QUARK ROOMS
 
@@ -322,9 +336,8 @@ dic["strangerm"][n_door][1][use] = dic["strangerm"][n_door][1][go] = copy.deepco
 dic["strangerm"][e_door][1] = {
     look: "print wr('A featureless door.')",
     talk: "print wr('The door remains silent.')",
-    opn: """print wr('''As you go to open the door, Dirac quietly intercepts you and pushes you back.
-
-'Tut tut,' he says, without making eye contact. 'Not yet.' ''')""",
+    opn: """print wr('The handle turns easily, and you pass through the door.')
+newrm = 'bottomrm'""",
     get: "print wr('''Hey, you can't do that.''')"
     }
 dic["strangerm"][e_door][1][use] = dic["strangerm"][e_door][1][go] = copy.deepcopy(dic["strangerm"][e_door][1][opn])
@@ -386,6 +399,8 @@ dic["charmrm"][roomd] = {
     }
 
 dic["charmrm"][s_door] = copy.deepcopy(dic["charmrm"][roomd])
+dic["charmrm"][bongos] = copy.deepcopy(dic["charmrm"][roomd])
+dic["charmrm"][sagan] = copy.deepcopy(dic["charmrm"][roomd])
 
 
 # UP/DOWN
@@ -416,7 +431,7 @@ In the north wall is a strange-looking door -- or rather, a portal. There is no 
 
 'Listen,' Gell-Mann says, beckoning with one finger. 'Come over here. You have to help me.'
 
-He turns back to the opening and you consider what to do next. Is it your imagination, or do you feel sort of heavier in here?''')
+He turns back to the opening and you consider what to do next.''')
 states["downrm"][roomd] = 1
 rmshow('downrm')"""
 dic["downrm"][roomd][1][look] = """print wr('You are in a small room with a door to the east and an empty portal in the north wall. Murray Gell-Mann is hunched over near the portal. A tall wardrobe stands nearby.')"""
@@ -507,9 +522,9 @@ dic["downrm"][rope][3][use] = """print wr('''You give Gell-Mann the nod and you 
 
 Gell-Mann rushes over, opens the case and peers inside. An eerie glow washes over his face. 'Oh, I can't express how joyful this makes me, sir!' he says.
 
-You're about to leave when Gell-Mann calls out. 'Hang on a minute,' he says. 'I have to give you a reward for being so kind.' He reaches into his pocket and pulls out some small and shiny objects. He deposits them into your outstretched palm.
-
-You inspect his gift: two small glass beads, flecked with strange colours. One marked 'u', the other marked 'd'. Maybe these will come in handy later on?''')
+You're about to leave when Gell-Mann calls out. 'Hang on a minute,' he says. 'I have to give you a reward for being so kind.' He reaches into his pocket and pulls out some small and shiny objects, which he deposits into your outstretched hand. You inspect his gift: two small glass beads, flecked with strange colours. One marked 'u', the other marked 'd'. Maybe these will come in handy later on?''')
+raw_input('''\n    ...\n''')
+print wr(''''Oh, one more thing,' Gell-Mann says, handing you an old steel key. 'You better take this. I swiped it as a prank on Pauli, but this episode has left me in no mood for practical jokes. Maybe you can give it back to him, he must be missing it by now.' ''')
 states['downrm'][rope] = 4
 states['downrm'][hadrons] = 2
 states['downrm'][gellmann] = 4
@@ -518,6 +533,7 @@ states['uprm'][hadrons] = 0
 states['uprm'][roomd] = 2
 states['uprm'][rope] = 0
 states['inv'][beads] = 1
+states['inv'][key_bt] = 1
 states[beads]['u'] = 1
 states[beads]['d'] = 1
 smdmap['E'][6] = 'u'
@@ -626,6 +642,286 @@ dic["uprm"][rope][1] = {
 
 # TOP/BOTTOM
 
+dic["bottomrm"] = {}
+
+dic["bottomrm"][roomd] = {
+    0: {},
+    1: {},
+    2: {},
+    3: {},
+    4: {}
+    }
+
+dic["bottomrm"][pauli] = copy.deepcopy(dic["bottomrm"][roomd])
+dic["bottomrm"][w_door] = copy.deepcopy(dic["bottomrm"][roomd])
+dic["bottomrm"][stairs] = copy.deepcopy(dic["bottomrm"][roomd])
+dic["bottomrm"][trapdoor] = copy.deepcopy(dic["bottomrm"][roomd])
+dic["bottomrm"][upstairs] = copy.deepcopy(dic["bottomrm"][roomd])
+dic["bottomrm"][downstairs] = copy.deepcopy(dic["bottomrm"][roomd])
+
+dic["bottomrm"][roomd][0][look] = """print wr('''As soon as you enter the room and close the door behind you, a shout goes up:
+
+'Hey! Excuse me! Hey, over here.' You look over in the direction of the voice and see a large, balding man in a woollen jumper sitting on the floor, breathing heavily. The man, who bears a strange resemblance to Ernest Borgnine, is beckoning you furiously. You recognise him with a start: eminent physicist Wolfgang Pauli.
+
+Looking around the room, you can't help but notice the steep staircase against the far wall, near Pauli, which leads up to a wooden trapdoor set in the ceiling. Thick, wooden supporting beams run the length of the ceiling. You haven't seen that kind of support structure anywhere else in the dungeon so far.''')
+states["bottomrm"][roomd] = 1
+rmshow('bottomrm')"""
+dic["bottomrm"][roomd][1][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a locked trapdoor in the ceiling. Large wooden beams support the roof. Wolfgang Pauli sits, looking exhausted, near the foot of the staircase.''')"""
+dic["bottomrm"][roomd][2][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a trapdoor in the ceiling, which stands open. Large wooden beams support the roof. Wolfgang Pauli sits, looking exhausted, near the foot of the staircase.''')"""
+
+dic["bottomrm"][pauli][1] = {
+    look: "print wr('''Wolfgang Pauli: an eccentric old fellow of Austrian extraction, currently collapsed in a heap at the bottom of a flight of stairs. Pauli received the Nobel Prize for his discovery of the principle of exclusion, which states that no two identical fermions may simultaneously occupy the same quantum state.''')",
+    talk: """print wr('''You walk over and kneel down next to Pauli. He reaches out and grabs your sleeve.
+
+'Please, sir, you must help me,' he says, focusing his piercing eyes upon you.
+
+You ask him what you can do to help. 'It is but a small thing I ask,' Pauli says. 'I properly belong in the room which stands above us -- I live up there -- but as I came down here this morning to get some exercise, the cursed trapdoor swung shut behind me, locked. I beat my fists against it for some time, wearing myself out utterly. Now I haven't even the energy to get myself up the stairs, let alone open that confounded trapdoor.'
+
+So, you ask, you'll need the key to get back up there?
+
+'Ja -- but I also am going to need a source of energy, or I'll never get up those stairs. In my room up there I have some powdered energy drink -- StrongForce, it is called -- if I could just have some of this energy drink, I would get all my old gusto back. Help me, my friend, and I promise I will reward you!' ''')
+states["bottomrm"][pauli] = 2
+states["bottomrm"][stairs] = 2
+states["bottomrm"][trapdoor] = 2
+states["bottomrm"][upstairs] = 2""",
+    opn: "print wr('''That's just rude.''')",
+    use: "print wr('''You cruel person, you.''')",
+    get: "print wr('''I don't think Pauli would like that.''')"
+    }
+dic["bottomrm"][pauli][1][go] = copy.deepcopy(dic["bottomrm"][pauli][1][talk])
+dic["bottomrm"][pauli][2] = copy.deepcopy(dic["bottomrm"][pauli][1])
+dic["bottomrm"][pauli][2][talk] = """print wr('''You kneel down next to Pauli. 'Please help me, friend!' says the old physicist. 'I am in dire need of an energy boost -- and you'll need the key to the damn trapdoor, as well!''')
+states['bottomrm'][stairs] = 2
+states['bottomrm'][trapdoor] = 2
+states['bottomrm'][downstairs] = 1"""
+dic["bottomrm"][pauli][2][go] = """print wr('''You walk over to Pauli.''')
+states['bottomrm'][stairs] = 2
+states['bottomrm'][trapdoor] = 2
+states['bottomrm'][downstairs] = 1"""
+dic["bottomrm"][pauli][3] = copy.deepcopy(dic["bottomrm"][pauli][2])
+dic["bottomrm"][pauli][3][talk] = """print wr('''You go to Pauli and kneel down next to him. 'Great, you opened the trapdoor,' he says, grinning. 'Now just you get me my energy drink!' ''')"""
+dic["bottomrm"][pauli][3][go] = """print wr('''You go to Pauli.''')"""
+
+dic["bottomrm"][w_door][1] = {
+    look: "print wr('A featureless door.')",
+    talk: "print wr('The door remains silent.')",
+    opn: """print wr('You walk to the west door. The handle turns easily, and you pass through.')
+states['bottomrm'][downstairs] = 1
+if states['bottomrm'][stairs] == 3:
+    states['bottomrm'][stairs] = 2
+    states['bottomrm'][upstairs] = 2
+if states['bottomrm'][trapdoor] == 3:
+    states['bottomrm'][trapdoor] = 2
+elif states['bottomrm'][trapdoor] == 5:
+    states['bottomrm'][trapdoor] = 4
+newrm = 'strangerm'""",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["bottomrm"][w_door][1][use] = dic["bottomrm"][w_door][1][go] = copy.deepcopy(dic["bottomrm"][w_door][1][opn])
+
+dic["bottomrm"][stairs][1] = {
+    look: "print wr('A steep stone staircase set against the east wall. Has a thin metal banister.')",
+    talk: "print wr('''The steps won't talk to you.''')",
+    go: dic['bottomrm'][pauli][1][talk],
+    use: dic['bottomrm'][pauli][1][talk],
+    opn: "print wr('''That doesn't really make sense.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["bottomrm"][stairs][2] = copy.deepcopy(dic["bottomrm"][stairs][1])
+dic["bottomrm"][stairs][3] = copy.deepcopy(dic["bottomrm"][stairs][1])
+dic["bottomrm"][stairs][2][go] = dic["bottomrm"][stairs][2][use] = """print wr('''You make your way slowly to the top of the stone staircase, and, once there, wave down at Pauli. You won't be able to get any further without a key for the trapdoor.''')
+states["bottomrm"][trapdoor] = 3
+states['bottomrm'][stairs] = 3
+states['bottomrm'][upstairs] = 3
+states['bottomrm'][downstairs] = 2"""
+dic["bottomrm"][stairs][3][go] = dic["bottomrm"][stairs][3][use] = "print wr('''You're already at the top of the stairs.''')"
+dic["bottomrm"][stairs][4] = copy.deepcopy(dic["bottomrm"][stairs][2])
+dic["bottomrm"][stairs][4][go] = dic["bottomrm"][stairs][4][use] = """print wr('''You make your way up the stone staircase, and, with one last hopeful look down at Pauli, go up into the room above.''')
+newrm = 'toprm'"""
+
+dic["bottomrm"][trapdoor][1] = {
+    look: "print wr('''A heavy-looking trapdoor. That's all you can tell at this distance.''')",
+    talk: "print wr('''The trapdoor's not a big conversationalist.''')",
+    go: dic['bottomrm'][pauli][1][talk],
+    use: dic['bottomrm'][pauli][1][talk],
+    opn: dic['bottomrm'][pauli][1][talk],
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["bottomrm"][trapdoor][2] = {
+    look: "print wr('''A heavy-looking trapdoor. That's all you can tell at this distance.''')",
+    talk: "print wr('''The trapdoor's not a big conversationalist.''')",
+    go: """print wr('You head to the top of the stairs.')
+states['bottomrm'][trapdoor] = 3
+states['bottomrm'][stairs] = 3
+states['bottomrm'][upstairs] = 3""",
+    use: "print wr('''You can't open it from down here.''')",
+    opn: "print wr('''You can't open it from down here.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["bottomrm"][trapdoor][3] = {
+    look: "print wr('''An old oak trapdoor. The surface is cracked and weathered. There's an old steel lock and a keyhole. You can hear what sounds like wind whistling on the other side.''')",
+    talk: "print wr('''The trapdoor's not a big conversationalist.''')",
+    go: """print wr('''You can't open it without the key.''')""",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["bottomrm"][trapdoor][3][use] = dic["bottomrm"][trapdoor][3][opn] = copy.deepcopy(dic["bottomrm"][trapdoor][3][go])
+dic["bottomrm"][trapdoor][4] = {
+    look: "print wr('''A heavy wooden trapdoor.''')",
+    talk: "print wr('''The trapdoor's not a big conversationalist.''')",
+    go: dic["bottomrm"][stairs][4][go],
+    use: dic["bottomrm"][stairs][4][go],
+    opn: "print wr('''It's already open.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+
+dic["bottomrm"][upstairs][1][go] = copy.deepcopy(dic["bottomrm"][stairs][1][go])
+dic["bottomrm"][upstairs][2][go] = copy.deepcopy(dic["bottomrm"][stairs][2][go])
+dic["bottomrm"][upstairs][3][go] = copy.deepcopy(dic["bottomrm"][stairs][3][go])
+dic["bottomrm"][upstairs][4][go] = copy.deepcopy(dic["bottomrm"][stairs][4][go])
+
+dic["bottomrm"][downstairs][1][go] = "print wr('''Um, you're already downstairs.''')"
+dic["bottomrm"][downstairs][2][go] = """print wr('You walk downstairs.')
+states['bottomrm'][downstairs] = 1
+if states['bottomrm'][stairs] == 3:
+    states['bottomrm'][stairs] = 2
+    states['bottomrm'][upstairs] = 2
+if states['bottomrm'][trapdoor] == 3:
+    states['bottomrm'][trapdoor] = 2
+elif states['bottomrm'][trapdoor] == 5:
+    states['bottomrm'][trapdoor] = 4"""
+
+
+dic["toprm"] = {}
+
+dic["toprm"][roomd] = {
+    0: {},
+    1: {},
+    2: {},
+    3: {}
+    }
+
+dic["toprm"][trapdoor] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][stairs] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][downstairs] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][bed] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][chest] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][powder] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][chair] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][desk] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][drawer] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][floorlamp] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][drapes] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][window] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][pauli] = copy.deepcopy(dic["toprm"][roomd])
+
+dic["toprm"][roomd][0][look] = """print wr('''You pass through the trapdoor into a well-furnished room. It is small but homely. There is a neatly-made single bed against one wall; a sturdy oak desk with a deep armchair; and thick purple drapes on one wall, presumably covering a window. The room is lit by a metal floor lamp standing near the desk.''')
+states["toprm"][roomd] = 1
+rmshow('toprm')"""
+dic["toprm"][roomd][1][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes.''')"""
+dic["toprm"][roomd][2][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes. The wooden chest you found is sitting on top of the bed.''')"""
+
+dic["toprm"][trapdoor][1] = {
+    look: "print wr('''The trapdoor heading back down the stairs to the room below.''')",
+    talk: "print wr('''The trapdoor's not a big conversationalist.''')",
+    go: """print wr('''You head back through the open trapdoor, down the stairs.''')
+newrm = 'bottomrm'""",
+    opn: "print wr('''It's already open.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][trapdoor][1][use] = copy.deepcopy(dic["toprm"][trapdoor][1][go])
+dic["toprm"][stairs] = copy.deepcopy(dic["toprm"][trapdoor])
+dic["toprm"][downstairs] = copy.deepcopy(dic["toprm"][trapdoor])
+
+dic["toprm"][bed][1] = {
+    look: """print wr('''A neatly-made single bed on wrought-iron legs. The covers are brown. You can see the corner of a chest sticking out from under the bed.''')
+states['toprm'][chest] = 1""",
+    talk: "print wr('''The bed won't be talking to you any time soon.''')",
+    go: """print wr('''You lie down on the bed, but you start to feel weird and get up again.''')""",
+    opn: "print wr('''You don't want to disturb the covers. They've been made so neatly.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][bed][1][recline] = dic["toprm"][bed][1][use] = copy.deepcopy(dic["toprm"][bed][1][go])
+
+dic["toprm"][chest][1] = {
+    look: """print wr('''You drag the chest out from under the bed. It's a heavy wooden box, a pattern of concentric circles engraved on the top. There's a row of small dials on the front -- it seems to be some sort of strange lock.''')
+states['toprm'][chest] = 2
+states['toprm'][roomd] = 2""",
+    talk: "print wr('''The chest has nothing to get off its chest.''')",
+    go: """print wr('''That makes no sense.''')""",
+    }
+dic["toprm"][chest][1][opn] = dic["toprm"][chest][1][get] = dic["toprm"][chest][1][use] = copy.deepcopy(dic["toprm"][chest][1][look])
+dic["toprm"][chest][2] = {
+    look: "print wr('''It's a heavy wooden chest, with a pattern of concentric circles engraved on the top. There's a row of small dials on the front -- some sort of strange lock.''')",
+    talk: "print wr('''The chest has nothing to get off its chest.''')",
+    go: """print wr('''That makes no sense.''')""",
+    opn: """print wr('''You peer closely at the lock.''')
+#run the lock puzzle""",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][chest][2][use] = copy.deepcopy(dic["toprm"][chest][2][opn])
+
+dic["toprm"][drapes][1] = {
+    look: "print wr('''Heavy gold-embroidered purple drapes mask the window.''')",
+    talk: "print wr('''You prod the drapes and they rustle suggestively.''')",
+    opn: """print wr('''You part the drapes and look out. After a moment you close the drapes and step back. The things you saw through that window will haunt you for the rest of your life.''')""",
+    get: "print wr('''The drapes are too heavy and bulky to take with you.''')"
+    }
+dic["toprm"][drapes][1][use] = dic["toprm"][drapes][1][go] = copy.deepcopy(dic["toprm"][drapes][1][opn])
+dic["toprm"][window][1] = copy.deepcopy(dic["toprm"][drapes][1])
+
+dic["toprm"][chair][1] = {
+    look: "print wr('A high-backed wine-finished leather armchair.')",
+    talk: "print wr('You talk to chairs? Like, regularly?')",
+    opn: "print wr('''That would be vandalism.''')",
+    use: "print wr('''You sit down in the chair, but it feels kind of wrong. You stand up again.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][chair][1][go] = dic["toprm"][chair][1][use]
+
+dic["toprm"][floorlamp][1] = {
+    look: "print wr('''A tall metal floor lamp. It throws a cheery light, despite the fact that it doesn't seem to be connected to a power source.''')",
+    talk: "print wr('''This won't achieve anything.''')",
+    opn: "print wr('''You can't do that.''')",
+    use: "print wr('''You think about switching it off, but then you'd be standing here in the dark, and that wouldn't help anything.''')",
+    get: "print wr('''It's too big to take with you.''')"
+    }
+dic["toprm"][floorlamp][1][go] = dic["toprm"][floorlamp][1][look]
+
+dic["toprm"][desk][1] = {
+    look: """print wr('''It's a sturdy, practical workstation. Strangely, there are no papers or stationery on the desk itself. Pauli must not have done any work here recently. The desk has several drawers; trying them, you find all locked bar one.''')
+states['toprm'][drawer] = 1
+states['toprm'][desk] = 2""",
+    talk: "print wr('''This won't achieve anything.''')",
+    get: "print wr('''It's far too heavy to take with you.''')"
+    }
+dic["toprm"][desk][1][opn] = dic["toprm"][desk][1][use] = dic["toprm"][desk][1][go] = copy.deepcopy(dic["toprm"][desk][1][look])
+
+dic["toprm"][desk][2] = {
+    look: """print wr('''It's a sturdy wooden desk. One of the drawers is unlocked.''')""",
+    talk: "print wr('''This won't achieve anything.''')",
+    opn: "print wr('''You'll have more success trying to open the drawer.''')",
+    use: "print wr('''You have no use for the desk. You didn't bring any homework with you.''')",
+    get: "print wr('''It's far too heavy to take with you.''')"
+    }
+
+dic["toprm"][drawer][1] = {
+    look: """print wr('''It's a closed but unlocked desk drawer.''')""",
+    talk: "print wr('''This won't achieve anything.''')",
+    opn: """print wr('''You slide the drawer out.''')
+states['toprm'][drawer] = 2""",
+    get: "print wr('''You'd have to open it first.''')"
+    }
+dic["toprm"][drawer][1][use] = copy.deepcopy(dic["toprm"][drawer][1][opn])
+
+dic["toprm"][drawer][2] = {
+    look: """print wr('''The desk drawer is open. It contains a paperclip, a note, some other stuff.''')""",
+    talk: "print wr('''This won't achieve anything.''')",
+    opn: """print wr('''It's already open.''')""",
+    shut: """print wr('''You close the drawer.''')
+states['toprm'][drawer] = 1""",
+    get: "print wr('''There's no point taking the drawer. It has no use to you.''')"
+    }
+dic["toprm"][drawer][2][use] = copy.deepcopy(dic["toprm"][drawer][2][shut])
 
 # LEPTON ROOMS
 
@@ -649,7 +945,8 @@ dic["muneurm"][s_door] = copy.deepcopy(dic["muneurm"][roomd])
 dic["muneurm"][roomd][0][look] = """print wr('''You enter the room, shutting the black door behind you. The room you have entered is quite poky. The ventilation is poor.
 
 There is other shit going on here that I can't be bothered describing right now. The important stuff you need to know is that Richard P. Feynman is sitting on a camping chair in one corner of the room, staring at you over tented fingers. There are doors set in the east, west and south walls.''')
-states["muneurm"][roomd] = 1"""
+states["muneurm"][roomd] = 1
+rmshow('muneurm')"""
 dic["muneurm"][roomd][1][look] = """print wr('''A little room containing Feynman and doors in all four directions.''')"""
 
 dic["muneurm"][feynman][1] = {

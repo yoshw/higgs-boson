@@ -89,9 +89,11 @@ pull = ('pull','yank','tug','haul','tow')
 drink = ('drink','lap','sip','gulp','swig','quaff')
 recline = ('lie','recline','repose','lounge','loll','sprawl')
 shut = ('shut','close')
+listen = ('listen','hark','hearken','attend')
+bend = ('bend','twist','straighten')
 
 modes = [get,look,talk,opn,use,go,combine,drum,pull,drink,recline,shut]
-invmodes = [look,use,combine,drum,drink]
+invmodes = [look,use,combine,drum,drink,listen,bend]
 
 #roomd
 roomd = ('room', 'env', 'environment')
@@ -120,7 +122,7 @@ drawer = ('drawer','desk drawer')
 floorlamp = ('floor lamp','lamp','lampstand','light')
 drapes = ('drapes','curtains','drapery','blinds')
 window = ('window','aperture')
-
+bricabrac = ('bric-a-brac','rubberband','rubberbands','rubber','band','bands','paper','mothball','mothballs')
 
 #inv objects
 beads = ('beads','jewels','stones')
@@ -133,6 +135,8 @@ up_bongos = ('upright bongos', 'bongos', 'upright')
 wardrobe = ('wardrobe', 'robe', 'cupboard', 'chest of drawers')
 rope = ('rope', 'bale', 'cord', 'coil', 'cable')
 teaspoon = ('teaspoon', 'spoon')
+paperclip = ('paperclip','clip')
+seashell = ('Dirac seashell','seashell','shell')
 
 #beads
 
@@ -809,12 +813,15 @@ dic["toprm"][powder] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][chair] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][desk] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][drawer] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][paperclip] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][seashell] = copy.deepcopy(dic["toprm"][roomd])
+dic["toprm"][bricabrac] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][floorlamp] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][drapes] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][window] = copy.deepcopy(dic["toprm"][roomd])
 dic["toprm"][pauli] = copy.deepcopy(dic["toprm"][roomd])
 
-dic["toprm"][roomd][0][look] = """print wr('''You pass through the trapdoor into a well-furnished room. It is small but homely. There is a neatly-made single bed against one wall; a sturdy oak desk with a deep armchair; and thick purple drapes on one wall, presumably covering a window. The room is lit by a metal floor lamp standing near the desk.''')
+dic["toprm"][roomd][0][look] = """print wr('''You come up through the trapdoor into a well-furnished room. It is small but homely. There is a neatly-made single bed against one wall; a sturdy oak desk with a deep armchair; and thick purple drapes on one wall, presumably covering a window. The room is lit by a metal floor lamp standing near the desk.''')
 states["toprm"][roomd] = 1
 rmshow('toprm')"""
 dic["toprm"][roomd][1][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes.''')"""
@@ -841,21 +848,35 @@ states['toprm'][chest] = 1""",
     get: "print wr('''Hey, you can't do that.''')"
     }
 dic["toprm"][bed][1][recline] = dic["toprm"][bed][1][use] = copy.deepcopy(dic["toprm"][bed][1][go])
+dic["toprm"][bed][2] = {
+    look: """print wr('''A neatly-made single bed on wrought-iron legs. The covers are brown, and the wooden chest you found is sitting on top.''')""",
+    talk: "print wr('''The bed won't be talking to you any time soon.''')",
+    go: """print wr('''You can't lie down on the bed. The chest is in the way.''')""",
+    opn: "print wr('''You don't want to disturb the covers. They've been made so neatly.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][bed][2][recline] = dic["toprm"][bed][2][use] = copy.deepcopy(dic["toprm"][bed][2][go])
 
 dic["toprm"][chest][1] = {
-    look: """print wr('''You drag the chest out from under the bed. It's a heavy wooden box, a pattern of concentric circles engraved on the top. There's a row of small dials on the front -- it seems to be some sort of strange lock.''')
+    look: """print wr('''You drag the chest out from under the bed. It's a heavy wooden box, with a pattern of concentric circles engraved on the lid. There's a row of small dials and markings on the front -- it seems to be some sort of strange lock.''')
 states['toprm'][chest] = 2
-states['toprm'][roomd] = 2""",
+states['toprm'][roomd] = 2
+states['toprm'][bed] = 2""",
     talk: "print wr('''The chest has nothing to get off its chest.''')",
     go: """print wr('''That makes no sense.''')""",
     }
 dic["toprm"][chest][1][opn] = dic["toprm"][chest][1][get] = dic["toprm"][chest][1][use] = copy.deepcopy(dic["toprm"][chest][1][look])
 dic["toprm"][chest][2] = {
-    look: "print wr('''It's a heavy wooden chest, with a pattern of concentric circles engraved on the top. There's a row of small dials on the front -- some sort of strange lock.''')",
+    look: "print wr('''It's a heavy wooden chest, with a pattern of concentric circles engraved on the lid. There's a row of small dials and markings on the front -- some sort of strange lock.''')",
     talk: "print wr('''The chest has nothing to get off its chest.''')",
     go: """print wr('''That makes no sense.''')""",
     opn: """print wr('''You peer closely at the lock.''')
-#run the lock puzzle""",
+raw_input('''\n(HIT ENTER)\n''')
+s = openchest()
+if s == 1:
+    #states['toprm'][chest] = open
+    print 'You won, huzzah!'
+""",
     get: "print wr('''Hey, you can't do that.''')"
     }
 dic["toprm"][chest][2][use] = copy.deepcopy(dic["toprm"][chest][2][opn])
@@ -908,20 +929,89 @@ dic["toprm"][drawer][1] = {
     look: """print wr('''It's a closed but unlocked desk drawer.''')""",
     talk: "print wr('''This won't achieve anything.''')",
     opn: """print wr('''You slide the drawer out.''')
-states['toprm'][drawer] = 2""",
+if (states['toprm'][seashell] == 0) and (states['toprm'][paperclip] == 0):
+    exec dic["toprm"][drawer][2][look]
+    states['toprm'][drawer] = 2
+    states['toprm'][seashell] = 1
+    states['toprm'][paperclip] = 1
+elif (states['toprm'][seashell] == 2) and (states['toprm'][paperclip] == 0):
+    states['toprm'][drawer] = 3
+    states['toprm'][paperclip] = 1
+elif (states['toprm'][seashell] == 0) and (states['toprm'][paperclip] == 2):
+    states['toprm'][drawer] = 4
+    states['toprm'][seashell] = 1
+elif (states['toprm'][seashell] == 2) and (states['toprm'][paperclip] == 2):
+    states['toprm'][drawer] = 5
+states['toprm'][bricabrac] = 1""",
     get: "print wr('''You'd have to open it first.''')"
     }
 dic["toprm"][drawer][1][use] = copy.deepcopy(dic["toprm"][drawer][1][opn])
 
 dic["toprm"][drawer][2] = {
-    look: """print wr('''The desk drawer is open. It contains a paperclip, a note, some other stuff.''')""",
+    look: """print wr('''The drawer contains an assortment of bric-a-brac -- scattered rubber bands, a mothball, some scraps of blank tissue paper, a paperclip, and a small helical seashell.''')""",
     talk: "print wr('''This won't achieve anything.''')",
     opn: """print wr('''It's already open.''')""",
     shut: """print wr('''You close the drawer.''')
-states['toprm'][drawer] = 1""",
+states['toprm'][drawer] = 1
+states['toprm'][seashell] = 0
+states['toprm'][paperclip] = 0
+states['toprm'][bricabrac] = 0""",
     get: "print wr('''There's no point taking the drawer. It has no use to you.''')"
     }
 dic["toprm"][drawer][2][use] = copy.deepcopy(dic["toprm"][drawer][2][shut])
+dic["toprm"][drawer][3] = copy.deepcopy(dic["toprm"][drawer][2])
+dic["toprm"][drawer][3][look] = """print wr('''The drawer contains an assortment of bric-a-brac -- scattered rubber bands, a mothball, some scraps of blank tissue paper, and a paperclip.''')"""
+dic['toprm'][drawer][3][shut] = """print wr('''You close the drawer.''')
+states['toprm'][drawer] = 1
+states['toprm'][paperclip] = 0
+states['toprm'][bricabrac] = 0"""
+dic["toprm"][drawer][4] = copy.deepcopy(dic["toprm"][drawer][2])
+dic["toprm"][drawer][4][look] = """print wr('''The drawer contains an assortment of bric-a-brac -- scattered rubber bands, a mothball, some scraps of blank tissue paper, and a small helical seashell.''')"""
+dic['toprm'][drawer][4][shut] = """print wr('''You close the drawer.''')
+states['toprm'][drawer] = 1
+states['toprm'][seashell] = 0
+states['toprm'][bricabrac] = 0"""
+dic["toprm"][drawer][5] = copy.deepcopy(dic["toprm"][drawer][2])
+dic["toprm"][drawer][5][look] = """print wr('''The drawer contains an assortment of bric-a-brac -- scattered rubber bands, a mothball, and some scraps of blank tissue paper. Nothing of use, though.''')"""
+dic['toprm'][drawer][5][shut] = """print wr('''You close the drawer.''')
+states['toprm'][drawer] = 1
+states['toprm'][bricabrac] = 0"""
+
+dic["toprm"][seashell][1] = {
+    look: """print wr('''A small, black, helical seashell. Its geometry is perfect but deeply unsettling. After a moment of staring at it, you realise what it is: none other than that rarest of flotsams, a Dirac seashell.''')""",
+    talk: "print wr('''You can't speak to it.''')",
+    opn: """print wr('''It can't be opened.''')""",
+    get: """print wr('''You carefully retrieve the seashell from the drawer. It is vibrating ever so slightly.''')
+states['toprm'][seashell] = 2
+states['inv'][seashell] = 1
+if states['toprm'][paperclip] == 2:
+    states['toprm'][drawer] = 5
+else:
+    states['toprm'][drawer] = 3"""
+    }
+dic["toprm"][seashell][1][use] = copy.deepcopy(dic["toprm"][seashell][1][get])
+
+dic["toprm"][paperclip][1] = {
+    look: """print wr('''A large paperclip.''')""",
+    talk: "print wr('''Paperclips don't talk.''')",
+    opn: """print wr('''You'll have to pick it up first.''')""",
+    get: """print wr('''You pick up the paperclip and toss it in your bag.''')
+states['toprm'][paperclip] = 2
+states['inv'][paperclip] = 1
+if states['toprm'][seashell] == 2:
+    states['toprm'][drawer] = 5
+else:
+    states['toprm'][drawer] = 4"""
+    }
+dic["toprm"][paperclip][1][use] = copy.deepcopy(dic["toprm"][paperclip][1][opn])
+
+dic["toprm"][bricabrac][1] = {
+    look: """print wr('''It's just useless bric-a-brac.''')""",
+    talk: "print wr('''This won't achieve anything.''')",
+    opn: """print wr('''There's nothing to open.''')""",
+    get: "print wr('''That's not of any use to you.''')"
+    }
+dic["toprm"][drawer][1][use] = copy.deepcopy(dic["toprm"][drawer][1][get])
 
 # LEPTON ROOMS
 

@@ -5,6 +5,7 @@ from funcs import *
 from states import *
 from smdmap import *
 from inv import *
+from spin import *
 import traceback
 import string
 

@@ -79,6 +79,9 @@ states["toprm"] = {
     chair: 1,
     desk: 1,
     drawer: 0,
+    paperclip: 0,
+    seashell: 0,
+    bricabrac: 0,
     floorlamp: 1,
     drapes: 1,
     window: 1,
@@ -163,7 +166,9 @@ states["inv"] = {
     tripod: 0,
     up_bongos: 0,
     rope: 0,
-    teaspoon: 0    
+    teaspoon: 0,
+    paperclip: 0,
+    seashell: 0
     }
 
 states[beads] = {

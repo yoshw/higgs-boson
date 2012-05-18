@@ -74,6 +74,7 @@ def beadhide(bead):
 
 def invprint():
     inv_list = [x[0] for x in idic.keys() if states['inv'][x] == 1]
+    inv_list.sort(key=string.lower)
 
     print inv_txt
     if len(inv_list) == 0:
@@ -220,8 +221,8 @@ def invuse(item, raw, rm):
         print "You can't use the %s in that way." % item[0]
         return
     elif len(obj) == 0:
-        if roomd in idic[item][states['inv'][item]][use][rm].keys():
-            exec idic[item][states['inv'][item]][use][rm][roomd]
+        if 'no_ob' in idic[item][states['inv'][item]][use][rm].keys():
+            exec idic[item][states['inv'][item]][use][rm]['no_ob']
             return 2
         else:
             print "You need to use the %s with another (present) object." % item[0]
@@ -254,6 +255,8 @@ idic[tripod] = copy.deepcopy(idic[beads])
 idic[up_bongos] = copy.deepcopy(idic[beads])
 idic[rope] = copy.deepcopy(idic[beads])
 idic[teaspoon] = copy.deepcopy(idic[beads])
+idic[seashell] = copy.deepcopy(idic[beads])
+idic[paperclip] = copy.deepcopy(idic[beads])
 #New inventory items get added here!
 
 idic[beads][1][look] = """print '''
@@ -266,11 +269,11 @@ print '''
 ---------------------------------------------------
 '''
 """
-idic[beads][1][use] = "print wr('''You can't use them yet.''')"
+idic[beads][1][use] = {}
 
 
 idic[key_bt][1][look] = "print wr('''An old steel key that opens the trapdoor in the bottom room.''')"    
-idic[key_bt][1][use] = {'bottomrm':{},'toprm':{}}
+idic[key_bt][1][use] = {'bottomrm':{},'toprm':{},'inv':{}}
 idic[key_bt][1][use]['bottomrm'][trapdoor] = """print wr('''With a satisfying, metallic thunk, the key turns in the lock of the trapdoor. You push the trapdoor up -- it's damn heavy! -- and it swings wide open.
 
 Pauli beckons you and you run down the stairs. 'Great stuff, friend!' he says. 'Now get yourself up there and grab my energy drink powder. It's under my bed.' ''')
@@ -319,7 +322,7 @@ idic[powder][1][use]['inv'][bottle] = copy.deepcopy(idic[powder][1][combine][bot
 
 
 idic[energydrink][1][look] = "print wr('A water bottle full of StrongForce energy drink, fizzing away.')"
-idic[energydrink][1][use] = {'bottomrm':{},'strangerm':{},'downrm':{}}
+idic[energydrink][1][use] = {'bottomrm':{},'strangerm':{},'downrm':{},'inv':{}}
 idic[energydrink][1][use]['bottomrm'][pauli] = """print wr('''Pauli's face fills with glee.
 
 'This is truly splendid!' he says. 'Nothing gets me going like StrongForce!'
@@ -395,4 +398,23 @@ states['uprm'][rope] = 1"""
 
 idic[teaspoon][1][look] = "print wr('A silver teaspoon.')"
 idic[teaspoon][1][use] = {'strangerm':{},'inv':{}}
-idic[teaspoon][1][use]['strangerm'][roomd] = "print wr('''A magical feeling comes over you as you wave the teaspoon around the room. Dirac is unimpressed.''')"
+idic[teaspoon][1][use]['strangerm']['no_ob'] = "print wr('''A magical feeling comes over you as you wave the teaspoon around the room. Dirac is unimpressed.''')"
+
+
+idic[seashell][1][look] = "print wr('A Dirac seashell. It glows with an eerie power.')"
+idic[seashell][1][use] = {'strangerm':{},'downrm':{},'bottomrm':{},'muneurm':{},'inv':{}}
+idic[seashell][1][use]['downrm'][gellmann] = """print wr(''''Beautiful, a Dirac seashell,' Gell-Mann says, glancing up from his hadrons. 'You enjoy that.' ''')"""
+idic[seashell][1][use]['bottomrm'][pauli] = """print wr(''''Oh, yes, the seashell,' Pauli says. 'It is Dirac's. I snuck it away from him for a joke. But it is bad luck, that thing. Perhaps it is responsible for my current predicament.' ''')"""
+idic[seashell][1][use]['strangerm'][dirac] = """print wr('''Dirac's eyes nearly bug out of his head.
+
+'My ... my seashell!' he says. 'You found it! Praise you, strange interloper.' ''')"""
+idic[seashell][1][use]['muneurm'][feynman] = """print wr(''''Neato,' says Feynman.''')"""
+idic[seashell][1][listen] = "print wr('''Gingerly, you put the Dirac seashell to your ear. You hear a strange whistling: the roaring song of the negative particles.''')"
+
+idic[paperclip][1][look] = "print wr('A metal paperclip.')"
+idic[paperclip][1][use] = {'inv':{}}
+idic[paperclip][1][bend] = """print wr('You straighten the paperclip.')
+states['inv'][paperclip] = 2"""
+idic[paperclip][2][look] = "print wr('A straightened metal paperclip.')"
+idic[paperclip][2][use] = {'inv':{}}
+idic[paperclip][2][bend] = """print wr('''If you bend it any more, you'll break it.''')"""

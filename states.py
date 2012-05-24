@@ -158,10 +158,11 @@ states["higgsrm"] = {
 
 states["inv"] = {
     beads: 0,
+    key: 9,
     key_bt: 0,
     bottle: 1,
-    powder: 1,
-    energydrink: 0,
+    powder: 0,
+    refresher: 0,
     bongos: 1,
     tripod: 0,
     up_bongos: 0,

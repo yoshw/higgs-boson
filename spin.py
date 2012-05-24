@@ -21,7 +21,9 @@ d['d3'] = {'val':2,'disp':dial[2]}
 d['d4'] = {'val':2,'disp':dial[2]}
 
 def spin(scr):
-    curses.curs_set(0)
+    try:
+        curses.curs_set(0)
+    except: pass
 
     solved = 0
     p = 2
@@ -36,7 +38,7 @@ def spin(scr):
     scr.refresh()
     
     newscr = scr.subwin(10,51,maxy-21,0)
-    newscr.box(ord('|'),ord('-'))
+    newscr.border(ord('|'),ord('|'),ord('='),ord('='),ord('.'),ord('.'),ord('\''),ord('\''))
     newscr.addstr(2,11,box1)
     newscr.addstr(3,9,box2)
     newscr.addstr(4,8,''.join(dials))

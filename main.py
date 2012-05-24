@@ -122,7 +122,7 @@ def prompter(rm):
 
 
 def room():
-    rm = "toprm"
+    rm = "entryrm"
     newrm = rm
 
     while True:

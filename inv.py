@@ -73,7 +73,7 @@ def beadhide(bead):
 # Functions
 
 def invprint():
-    inv_list = [x[0] for x in idic.keys() if states['inv'][x] == 1]
+    inv_list = [x[0] for x in idic.keys() if (states['inv'][x] > 0 and states['inv'][x] < 9)]
     inv_list.sort(key=string.lower)
 
     print inv_txt
@@ -245,11 +245,12 @@ idic[beads] = {
     2: {}
     }
 
+idic[key] = copy.deepcopy(idic[beads])
 idic[key_bt] = copy.deepcopy(idic[beads])
 
 idic[bottle] = copy.deepcopy(idic[beads])
 idic[powder] = copy.deepcopy(idic[beads])
-idic[energydrink] = copy.deepcopy(idic[beads])
+idic[refresher] = copy.deepcopy(idic[beads])
 idic[bongos] = copy.deepcopy(idic[beads])
 idic[tripod] = copy.deepcopy(idic[beads])
 idic[up_bongos] = copy.deepcopy(idic[beads])
@@ -271,19 +272,43 @@ print '''
 """
 idic[beads][1][use] = {}
 
+idic[key][9] = {}
+idic[key][9][look] = "print wr('''Which key do you want to look at? You can use the code in square brackets to refer to a particular key.''')"
+idic[key][9][use] = {'entryrm':{},'bottomrm':{}}
+idic[key][9][use]['entryrm']['no_ob'] = "print wr('''You don't have a key that works here.''')"
+idic[key][9][use]['mainrm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+idic[key][9][use]['strangerm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+idic[key][9][use]['charmrm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+idic[key][9][use]['uprm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+idic[key][9][use]['downrm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+idic[key][9][use]['bottomrm']['no_ob'] = """if states['inv'][key_bt] == 1:
+    print wr('''You better use the key on the trapdoor.''')
+else:
+    print wr('''You don't have a key that works here.''')
+"""
+idic[key][9][use]['bottomrm'][trapdoor] = """if states['inv'][key_bt] == 1:
+    exec idic[key_bt][1][use]['bottomrm'][trapdoor]
+else:
+    print wr('''You don't have a key that works here.''')"""
+idic[key][9][use]['toprm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+idic[key][9][use]['muneurm'] = copy.deepcopy(idic[key][9][use]['entryrm'])
+
 
 idic[key_bt][1][look] = "print wr('''An old steel key that opens the trapdoor in the bottom room.''')"    
-idic[key_bt][1][use] = {'bottomrm':{},'toprm':{},'inv':{}}
-idic[key_bt][1][use]['bottomrm'][trapdoor] = """print wr('''With a satisfying, metallic thunk, the key turns in the lock of the trapdoor. You push the trapdoor up -- it's damn heavy! -- and it swings wide open.
+idic[key_bt][1][use] = {'bottomrm':{},'inv':{}}
+idic[key_bt][1][use]['bottomrm'][trapdoor] = """if states['bottomrm'][pauli] == 1:
+    exec dic['bottomrm'][pauli][1][talk]
+else:
+    print wr('''With a satisfying, metallic thunk, the key turns in the lock of the trapdoor. You push the trapdoor up -- it's damn heavy! -- and it swings wide open.
 
-Pauli beckons you and you run down the stairs. 'Great stuff, friend!' he says. 'Now get yourself up there and grab my energy drink powder. It's under my bed.' ''')
-states['inv'][key_bt] = 0
-states['bottomrm'][trapdoor] = 4
-states['bottomrm'][stairs] = 4
-states['bottomrm'][upstairs] = 4
-states['bottomrm'][downstairs] = 1
-states['bottomrm'][pauli] = 3
-states['bottomrm'][roomd] = 2"""
+Pauli beckons you and you run down the stairs. 'Great stuff, friend!' he says. 'Now get yourself up there and grab my Strongforce powder. It's under my bed. Just give the dials a good spin.' ''')
+    states['inv'][key_bt] = 0
+    states['bottomrm'][trapdoor] = 4
+    states['bottomrm'][stairs] = 4
+    states['bottomrm'][upstairs] = 4
+    states['bottomrm'][downstairs] = 1
+    states['bottomrm'][pauli] = 3
+    states['bottomrm'][roomd] = 2"""
 
 idic[bottle][1][look] = "print wr('Your trusty BPA- and phthalate-free metal water bottle, topped up with clear, ice-cold water.')"
 idic[bottle][1][use] = {'bottomrm':{},'downrm':{},'charmrm':{},'strangerm':{},'muneurm':{},'inv':{}}
@@ -293,10 +318,13 @@ idic[bottle][1][use]['charmrm'][sagan] = """print wr('''You offer Sagan your wat
 idic[bottle][1][use]['strangerm'][dirac] = """print wr('''You offer Dirac your water bottle. He sniffs loudly. He won't even look at you.''')"""
 idic[bottle][1][use]['bottomrm'][pauli] = """print wr('''You offer Pauli your water bottle. He accepts it gratefully and takes a swig. 'Thank you,' he says, wiping his mouth. 'That's very good. But what I really need, you know, is some StrongForce!' ''')"""
 idic[bottle][1][combine] = {
-    powder: """print wr('You pour the StrongForce powder into your bottle and swirl it around some. You hear an energetic fizzing coming from the bottle. Perfect.')
-states['inv'][bottle] = 0
-states['inv'][powder] = 0
-states['inv'][energydrink] = 1"""
+    powder: """if states['inv'][powder] == 1:
+    print wr('''You can't just go pouring an indiscriminate amount of powder into your bottle. Have you seen what excessive energy drink consumption can do to your heart?''')
+elif states['inv'][powder] == 2:
+    print wr('You pour the StrongForce powder into your bottle and swirl it around some. You hear an energetic fizzing coming from the bottle. Perfect.')
+    states['inv'][bottle] = 0
+    states['inv'][powder] = 0
+    states['inv'][refresher] = 1"""
     }
 idic[bottle][1][use]['inv'][powder] = copy.deepcopy(idic[bottle][1][combine][powder])
 idic[bottle][1][drink] = "print wr('Aahh ... nothing like a refreshing drink of cold, clear H20.')"
@@ -307,42 +335,61 @@ idic[bottle][2][combine] = {}
 idic[bottle][2][drink] = "print wr('''It's empty now, I'm afraid. You'll have to go thirsty.''')"
 
 
-idic[powder][1][look] = "print wr('Precisely four teaspoons of StrongForce energy drink powder.')"
+idic[powder][1][look] = "print wr('A small vial containing an unspecified amount of powdered StrongForce Energy Refresher. The label warns you not to take more than four teaspoons of powder a day.')"
+idic[powder][1][open] = "print wr('You open the vial and sniff the powder. Smells kind of lemony. You screw the lid back on.')"
 idic[powder][1][use] = {'bottomrm':{},'inv':{}}
 idic[powder][1][use]['bottomrm'][pauli] = """print wr('''Pauli lights up when he sees you have the powder.
 
-'Wonderful!' he says. 'But now the problem is, it can only be taken in liquid form. The powder does me no good whatsoever. So I must ask you to do a little more work for me, and bring me the drink.' ''')"""
+'Wonderful!' he says. 'But now the problem is, it can only be taken in liquid form. The powder on its own does me no good whatsoever. So I must ask you to do a little more work for me, and bring me the StrongForce in drink form.' ''')"""
 idic[powder][1][combine] = {
-    bottle: """print wr('You pour the StrongForce powder into your bottle and swirl it around some. You hear an energetic fizzing coming from the bottle. Perfect.')
-states['inv'][bottle] = 0
-states['inv'][powder] = 0
-states['inv'][energydrink] = 1"""
+    teaspoon: """print wr('''You carefully measure out four teaspoons of StrongForce powder -- the prescribed amount -- and throw away the excess. The vial now contains exactly the right amount of powder. Having no more need for the teaspoon, you discard it.''')
+states['inv'][powder] = 2
+states['inv'][teaspoon] = 0""",
+    bottle: """print wr('''You can't just go pouring an indiscriminate amount of powder into your bottle. Have you seen what excessive energy drink consumption can do to your heart?''')"""
     }
 idic[powder][1][use]['inv'][bottle] = copy.deepcopy(idic[powder][1][combine][bottle])
+idic[powder][1][use]['inv'][teaspoon] = copy.deepcopy(idic[powder][1][combine][teaspoon])
+idic[powder][2][look] = "print wr('A small vial containing exactly four teaspoons of powdered StrongForce energy refresher.')"
+idic[powder][2][open] = "print wr('You open the vial and sniff the powder. Smells kind of lemony. You screw the lid back on.')"
+idic[powder][2][use] = {'bottomrm':{},'inv':{}}
+idic[powder][2][use]['bottomrm'][pauli] = """print wr('''Pauli lights up when he sees you have the powder.
+
+'Wonderful!' he says. 'But now the problem is, it can only be taken in liquid form. The powder on its own does me no good whatsoever. So I must ask you to do a little more work for me, and bring me the StrongForce in drink form.' ''')"""
+idic[powder][2][combine] = {
+    bottle: """print wr('You pour the StrongForce powder into your water bottle and swirl it around some. You hear an energetic fizzing coming from the bottle. Perfect.')
+states['inv'][bottle] = 0
+states['inv'][powder] = 0
+states['inv'][refresher] = 1"""
+    }
+idic[powder][2][use]['inv'][bottle] = copy.deepcopy(idic[powder][2][combine][bottle])
 
 
-idic[energydrink][1][look] = "print wr('A water bottle full of StrongForce energy drink, fizzing away.')"
-idic[energydrink][1][use] = {'bottomrm':{},'strangerm':{},'downrm':{},'inv':{}}
-idic[energydrink][1][use]['bottomrm'][pauli] = """print wr('''Pauli's face fills with glee.
+idic[refresher][1][look] = "print wr('A water bottle full of StrongForce refresher, fizzing away.')"
+idic[refresher][1][use] = {'bottomrm':{},'strangerm':{},'downrm':{},'inv':{}}
+idic[refresher][1][use]['bottomrm'][pauli] = """print wr('''Pauli's face fills with glee.
 
 'This is truly splendid!' he says. 'Nothing gets me going like StrongForce!'
 
 He takes the bottle from you, unscrews the lid, and downs the contents in one long gulp. He wipes his mouth and throws the bottle back to you.
 
-'Yes, oh yes! Feel the surge!' he says. He shivers, bounces up and down on the spot a couple of times, then making something approaching a war cry, he bounds up the steep staircase with ease.
+'Yes, oh yes! Feel the surge!' he says. He shivers, bounces up and down on the spot a couple of times, then, with a great yelping and yodelling, bounds up the steep staircase with ease.
 
 He disappears through the trapdoor. A few moments pass, in which you can hear rustling from upstairs. You scratch your elbow. Then Pauli's voice floats down from above:
 
 'Before you leave, friend, why don't you pop up here. I have something to give you for your hard work.' ''')
-states['inv'][energydrink] = 0
+states['inv'][refresher] = 0
 states['inv'][bottle] = 2
-states['bottomrm'][pauli] =
-states['toprm'][pauli] =
-etc. etc.
+states['bottomrm'][pauli] = 4
+states['bottomrm'][roomd] = 3
+states['toprm'][pauli] = 1
+states['toprm'][roomd] = 3
+states['toprm'][chair] = 2
+states['toprm'][drawer] = 6
+states['toprm'][desk] = 2
 """
-idic[energydrink][1][use]['downrm'][gellmann] = """print wr('''You offer Gell-Mann the energy drink. 'Oh, thank you,' he says. 'But I really have as much energy as I need.' ''')"""
-idic[energydrink][1][use]['strangerm'][dirac] = """print wr('''You offer Dirac the energy drink. His eyes widen. 'What is this!' he shouts. 'Some kind of insult? Fiend!' ''')"""
-idic[energydrink][1][drink] = "print wr('''You'd better not drink it. That would make Pauli very unhappy.''')"
+idic[refresher][1][use]['downrm'][gellmann] = """print wr('''You offer Gell-Mann the energy drink. 'Oh, thank you,' he says. 'But I really have as much energy as I need.' ''')"""
+idic[refresher][1][use]['strangerm'][dirac] = """print wr('''You offer Dirac the energy refresher. His eyes widen. 'What is this!' he shouts. 'Some kind of insult? Harridan! Begone, fiend!' ''')"""
+idic[refresher][1][drink] = "print wr('''You'd better not drink it. That would make Pauli very unhappy.''')"
 
 
 idic[bongos][1][look] = "print wr('A set of cheap bongos with blue and red stars painted on the side.')"
@@ -399,9 +446,15 @@ states['uprm'][rope] = 1"""
 idic[teaspoon][1][look] = "print wr('A silver teaspoon.')"
 idic[teaspoon][1][use] = {'strangerm':{},'inv':{}}
 idic[teaspoon][1][use]['strangerm']['no_ob'] = "print wr('''A magical feeling comes over you as you wave the teaspoon around the room. Dirac is unimpressed.''')"
+idic[teaspoon][1][combine] = {
+    powder: """print wr('''You carefully measure out four teaspoons of StrongForce powder -- the prescribed amount -- and throw away the excess. The vial now contains exactly the right amount of powder. Having no more need for the teaspoon, you discard it.''')
+states['inv'][powder] = 2
+states['inv'][teaspoon] = 0"""
+    }
+idic[teaspoon][1][use]['inv'][powder] = copy.deepcopy(idic[teaspoon][1][combine][powder])
 
 
-idic[seashell][1][look] = "print wr('A Dirac seashell. It glows with an eerie power.')"
+idic[seashell][1][look] = "print wr('A Dirac seashell. It glows with an eerie power and vibrates softly.')"
 idic[seashell][1][use] = {'strangerm':{},'downrm':{},'bottomrm':{},'muneurm':{},'inv':{}}
 idic[seashell][1][use]['downrm'][gellmann] = """print wr(''''Beautiful, a Dirac seashell,' Gell-Mann says, glancing up from his hadrons. 'You enjoy that.' ''')"""
 idic[seashell][1][use]['bottomrm'][pauli] = """print wr(''''Oh, yes, the seashell,' Pauli says. 'It is Dirac's. I snuck it away from him for a joke. But it is bad luck, that thing. Perhaps it is responsible for my current predicament.' ''')"""

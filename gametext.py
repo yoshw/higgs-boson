@@ -127,8 +127,8 @@ bricabrac = ('bric-a-brac','rubberband','rubberbands','rubber','band','bands','p
 #inv objects
 beads = ('beads','jewels','stones')
 bottle = ('water bottle','waterbottle','water','bottle')
-powder = ('StrongForce powder','powder','strongforce')
-energydrink = ('StrongForce drink','strongforce','energy','drink','bottle')
+powder = ('StrongForce powder','powder','strongforce','vial')
+refresher = ('StrongForce refresher','strongforce','energy','refresher','bottle')
 bongos = ('bongos', 'drum', 'drums')
 tripod = ('tripod', 'camera tripod', 'camera stand')
 up_bongos = ('upright bongos', 'bongos', 'upright')
@@ -141,7 +141,8 @@ seashell = ('Dirac seashell','seashell','shell')
 #beads
 
 #keys
-key_bt = ('trapdoor key','trapdoorkey','trapkey','bottomkey','topkey')    
+key = ('key','latchkey')
+key_bt = ('trapdoor key [trapkey]', 'trapkey')
 
 #nav objects
 door = ('door', 'portal')
@@ -379,18 +380,21 @@ dic["strangerm"][dirac][2] = {
     look: "print wr('Paul Dirac: a very tall, thin English physicist who predicted the existence of antimatter.')",
     talk: """print wr('''Dirac seems excited to see you. He bends down slightly so your heads are level.
 
-'I see you have the first two beads,' he says. 'How very exciting! The game is afoot!' He rubs his hands together in a somewhat unsettling fashion. 'Now, you'll need these before you can go any further.'
+'I see you have the first two beads,' he says. 'How very exciting! The game is afoot!' He rubs his hands together in a somewhat unsettling fashion.""",
+    opn: "print wr('''That's just rude.''')",
+    use: "print wr('''Dirac's uses are many, but they are obscure.''')",
+    get: "print wr('''Now's not the time to be picking fights with geniuses.''')"
+    }
+dic["strangerm"][dirac][3] = copy.deepcopy(dic["strangerm"][dirac][2])
+dic["strangerm"][dirac][3][talk] = """print wr('''Dirac seems excited to see you. 'Four beads, eh?' he says. 'Four beads! You must have some modicum of intelligence after all.''')"""
+
+"""'Now, you'll need these before you can go any further.'
 
 Reaching into his pocket, he pulls out two more glass beads, these ones marked 'c' and 's', and hands them to you. Hm. That seemed very easy, didn't it?''')
 states[beads]['c'] = 1
 states[beads]['s'] = 1
 smdmap['E'][17] = 'c'
-smdmap['I'][17] = 's'""",
-    opn: "print wr('''That's just rude.''')",
-    use: "print wr('''Dirac's uses are many, but they are obscure.''')",
-    get: "print wr('''Now's not the time to be picking fights with geniuses.''')"
-    }
-
+smdmap['I'][17] = 's'"""
 
 
 dic["charmrm"] = {}
@@ -493,7 +497,7 @@ dic["downrm"][portal] = copy.deepcopy(dic["downrm"][n_door])
 dic["downrm"][wardrobe][1] = {
     look: "print wr('A tall, unadorned wardrobe. It looks as though it has been here for a long time.')",
     talk: "print wr('''It's not saying anything right now.''')",
-    opn: """print wr('You swing open the old doors of the wardrobe. The inside smells of mothballs and old paint. There are no clothes in here, just an old tripod, a coil of rope, and what appears to be a silver teaspoon.')
+    opn: """print wr('You swing open the old doors of the wardrobe. The inside smells of mothballs and old paint. There are no clothes in here, just an old tripod, a coil of rope, and a silver teaspoon sitting on a small shelf.')
 states["downrm"][tripod] = 1
 states["downrm"][rope] = 1
 states["downrm"][teaspoon] = 1
@@ -672,6 +676,7 @@ states["bottomrm"][roomd] = 1
 rmshow('bottomrm')"""
 dic["bottomrm"][roomd][1][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a locked trapdoor in the ceiling. Large wooden beams support the roof. Wolfgang Pauli sits, looking exhausted, near the foot of the staircase.''')"""
 dic["bottomrm"][roomd][2][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a trapdoor in the ceiling, which stands open. Large wooden beams support the roof. Wolfgang Pauli sits, looking exhausted, near the foot of the staircase.''')"""
+dic["bottomrm"][roomd][3][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a trapdoor in the ceiling, which stands open. Large wooden beams support the roof. Wolfgang Pauli has disappeared to the room above.''')"""
 
 dic["bottomrm"][pauli][1] = {
     look: "print wr('''Wolfgang Pauli: an eccentric old fellow of Austrian extraction, currently collapsed in a heap at the bottom of a flight of stairs. Pauli received the Nobel Prize for his discovery of the principle of exclusion, which states that no two identical fermions may simultaneously occupy the same quantum state.''')",
@@ -683,7 +688,7 @@ You ask him what you can do to help. 'It is but a small thing I ask,' Pauli says
 
 So, you ask, you'll need the key to get back up there?
 
-'Ja -- but I also am going to need a source of energy, or I'll never get up those stairs. In my room up there I have some powdered energy drink -- StrongForce, it is called -- if I could just have some of this energy drink, I would get all my old gusto back. Help me, my friend, and I promise I will reward you!' ''')
+'Ja -- but I also am going to need a source of energy, or I'll never get up those stairs. In my room up there I have some powdered energy refresher -- StrongForce, it is called -- if I could just have some of this energy drink, I would get all my old gusto back. Help me, my friend, and I promise I will reward you!' ''')
 states["bottomrm"][pauli] = 2
 states["bottomrm"][stairs] = 2
 states["bottomrm"][trapdoor] = 2
@@ -703,8 +708,16 @@ states['bottomrm'][stairs] = 2
 states['bottomrm'][trapdoor] = 2
 states['bottomrm'][downstairs] = 1"""
 dic["bottomrm"][pauli][3] = copy.deepcopy(dic["bottomrm"][pauli][2])
-dic["bottomrm"][pauli][3][talk] = """print wr('''You go to Pauli and kneel down next to him. 'Great, you opened the trapdoor,' he says, grinning. 'Now just you get me my energy drink!' ''')"""
+dic["bottomrm"][pauli][3][talk] = """print wr('''You go to Pauli and kneel down next to him. 'Great, you opened the trapdoor,' he says, grinning. 'Now just you get me my Strongforce refresher! It's under my bed. You must give the dials a good spin.' ''')"""
 dic["bottomrm"][pauli][3][go] = """print wr('''You go to Pauli.''')"""
+dic["bottomrm"][pauli][4] = {
+    look: "print wr('''Pauli isn't here anymore.''')",
+    talk: "print wr('''Pauli isn't here anymore.''')",
+    opn: "print wr('''Pauli isn't here anymore.''')",
+    go: "print wr('''Pauli isn't here anymore.''')",
+    use: "print wr('''Pauli isn't here anymore.''')",
+    get: "print wr('''Pauli isn't here anymore.''')"
+    }
 
 dic["bottomrm"][w_door][1] = {
     look: "print wr('A featureless door.')",
@@ -826,6 +839,7 @@ states["toprm"][roomd] = 1
 rmshow('toprm')"""
 dic["toprm"][roomd][1][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes.''')"""
 dic["toprm"][roomd][2][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes. The wooden chest you found is sitting on top of the bed.''')"""
+dic["toprm"][roomd][3][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes. The (empty) wooden chest you found is sitting on top of the bed. Pauli is sitting in the armchair, grinning.''')"""
 
 dic["toprm"][trapdoor][1] = {
     look: "print wr('''The trapdoor heading back down the stairs to the room below.''')",
@@ -871,15 +885,55 @@ dic["toprm"][chest][2] = {
     talk: "print wr('''The chest has nothing to get off its chest.''')",
     go: """print wr('''That makes no sense.''')""",
     opn: """print wr('''You peer closely at the lock.''')
-raw_input('''\n(HIT ENTER)\n''')
+raw_input('''\n(HIT ENTER)''')
 s = openchest()
 if s == 1:
-    #states['toprm'][chest] = open
-    print 'You won, huzzah!'
+    states['toprm'][chest] = 3
+    print wr('''The chest is now unlocked.''')
 """,
     get: "print wr('''Hey, you can't do that.''')"
     }
 dic["toprm"][chest][2][use] = copy.deepcopy(dic["toprm"][chest][2][opn])
+dic["toprm"][chest][3] = {
+    look: "print wr('''It's a heavy wooden chest, with a pattern of concentric circles engraved on the lid. You unlocked it by solving the 'spin' puzzle, but it's currently closed.''')",
+    talk: "print wr('''The chest has nothing to get off its chest.''')",
+    go: """print wr('''That makes no sense.''')""",
+    opn: """print wr('''You raise the lid.''')
+if states['toprm'][powder] == 0:
+    print wr('''The only thing in the chest is a vial of white powder.''')
+    states['toprm'][powder] = 1
+    states['toprm'][chest] = 4
+elif states['toprm'][powder] == 2:
+    print wr('''The chest is empty.''')
+    states['toprm'][chest] = 5""",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][chest][3][use] = copy.deepcopy(dic["toprm"][chest][3][opn])
+dic["toprm"][chest][4] = {
+    look: "print wr('''The only thing in the chest is a vial of white powder.''')",
+    talk: "print wr('''The chest has nothing to get off its chest.''')",
+    go: """print wr('''That makes no sense.''')""",
+    opn: """print wr('''It's already open.''')""",
+    get: "print wr('''Hey, you can't do that.''')",
+    shut: """print wr('''You close the lid.''')
+states['toprm'][chest] = 3
+if states['toprm'][powder] == 1:
+    states['toprm'][powder] = 0"""
+    }
+dic["toprm"][chest][4][use] = copy.deepcopy(dic["toprm"][chest][4][shut])
+dic["toprm"][chest][5] = copy.deepcopy(dic["toprm"][chest][4])
+dic["toprm"][chest][5][look] = "print wr('''The chest is now empty.''')"
+
+dic["toprm"][powder][1] = {
+    look: "print wr('''A vial of white powder, labelled 'StrongForce Energy Refresher'.''')",
+    talk: "print wr('''You tap out 'Hello' in Morse code on the side of the bottle, but there's no response.''')",
+    opn: """print wr('''No point opening it here.''')""",
+    get: """print wr('''You pick up the vial and deposit it in your bag.''')
+states['toprm'][powder] = 2
+states['inv'][powder] = 1
+states['toprm'][chest] = 5""",
+    use: """print wr('''You can't use it without picking it up.''')"""
+    }
 
 dic["toprm"][drapes][1] = {
     look: "print wr('''Heavy gold-embroidered purple drapes mask the window.''')",
@@ -898,6 +952,15 @@ dic["toprm"][chair][1] = {
     get: "print wr('''Hey, you can't do that.''')"
     }
 dic["toprm"][chair][1][go] = dic["toprm"][chair][1][use]
+dic["toprm"][chair][2] = {
+    look: "print wr('A high-backed wine-finished leather armchair. Pauli is sitting in it.')",
+    talk: "print wr('You talk to chairs? Like, regularly?')",
+    opn: "print wr('''That would be vandalism.''')",
+    use: "print wr('''You probably shouldn't sit on Pauli.''')",
+    get: "print wr('''Hey, you can't do that.''')"
+    }
+dic["toprm"][chair][2][go] = dic["toprm"][chair][2][use]
+
 
 dic["toprm"][floorlamp][1] = {
     look: "print wr('''A tall metal floor lamp. It throws a cheery light, despite the fact that it doesn't seem to be connected to a power source.''')",
@@ -976,9 +1039,22 @@ dic["toprm"][drawer][5][look] = """print wr('''The drawer contains an assortment
 dic['toprm'][drawer][5][shut] = """print wr('''You close the drawer.''')
 states['toprm'][drawer] = 1
 states['toprm'][bricabrac] = 0"""
+dic["toprm"][drawer][6] = {
+    look: """print wr('''It's a desk drawer.''')""",
+    talk: "print wr('''This won't achieve anything.''')",
+    opn: """if states['toprm'][pauli] == 1:
+    print wr('Better talk to Pauli first.')
+else:
+    print wr('''Pauli chuckles. 'Interested in the contents of my drawers, are you, my friend?' He opens the drawer, peers in, then reaches in and takes something out. 'Here you go -- the mysterious and powerful contents of Pauli's drawers! A ha ha!' He opens his hand to reveal nothing more than a large paperclip.
+
+'Nevertheless, why don't you take it, for your troubles.' ''')
+    states['inv'][paperclip] = 1""",
+    get: "print wr('''I'm afraid that makes no sense.''')"
+    }
+dic["toprm"][drawer][6][use] = copy.deepcopy(dic["toprm"][drawer][6][opn])
 
 dic["toprm"][seashell][1] = {
-    look: """print wr('''A small, black, helical seashell. Its geometry is perfect but deeply unsettling. After a moment of staring at it, you realise what it is: none other than that rarest of flotsams, a Dirac seashell.''')""",
+    look: """print wr('''A small, black, helical seashell. Its geometry is perfect but deeply unsettling. After a moment of staring at it, you realise what it is: none other than that rarest and most powerful of flotsams, a Dirac seashell.''')""",
     talk: "print wr('''You can't speak to it.''')",
     opn: """print wr('''It can't be opened.''')""",
     get: """print wr('''You carefully retrieve the seashell from the drawer. It is vibrating ever so slightly.''')
@@ -1011,7 +1087,35 @@ dic["toprm"][bricabrac][1] = {
     opn: """print wr('''There's nothing to open.''')""",
     get: "print wr('''That's not of any use to you.''')"
     }
-dic["toprm"][drawer][1][use] = copy.deepcopy(dic["toprm"][drawer][1][get])
+dic["toprm"][bricabrac][1][use] = copy.deepcopy(dic["toprm"][bricabrac][1][get])
+
+dic["toprm"][pauli][1] = {
+    look: "print wr('''Wolfgang Pauli: an eccentric old fellow of Austrian extraction, currently sitting in his favourite armchair, full of energy. Pauli received the Nobel Prize for his discovery of the principle of exclusion, which states that no two identical fermions may simultaneously occupy the same quantum state.''')",
+    talk: """print wr('''Pauli claps you on the arm. 'My dear friend!' he says. 'How can I ever thank you enough? I was hopelessly in trouble until you showed up.'
+
+You demur, but he goes on. 'I can't let you leave without giving you a little reward. Give me a moment.' He pulls an old key from his pocket and uses it to unlock one of the desk drawers. He reaches into the drawer and pulls out two small glass beads, which he places in your hand. One is marked 't', the other 'b'. He smiles warmly. 'When the time comes,' he says, 'You'll know what to do with these.' ''')
+states["toprm"][pauli] = 2
+states[beads]['t'] = 1
+states[beads]['b'] = 1
+smdmap['D'][28] = 't'
+smdmap['I'][28] = 'b'
+states['strangerm'][dirac] = 3
+if states['inv'][seashell] == 0:
+    print wr('''...\n'Oh, by the way,' Pauli says, 'there's one other thing you maybe can do for me.' He opens a drawer in his desk and pulls something out.
+
+'Maybe you could return this to Dirac for me. I snuck it away from him for a joke, you know, but it is bad luck, this thing. Perhaps it may have been responsible for my getting into this predicament in the first place.'
+
+Pauli places a seashell in your hand. But not just any seashell: a wyrd, powerful Dirac seashell.''')
+    states['inv'][seashell] = 1
+""",
+    opn: "print wr('''That's just rude.''')",
+    use: "print wr('''You cruel person, you.''')",
+    get: "print wr('''I don't think Pauli would like that.''')"
+    }
+dic["toprm"][pauli][2] = copy.deepcopy(dic["toprm"][pauli][1])
+dic["toprm"][pauli][2][talk] = "print wr('''Pauli smiles. 'Best of luck in your travels, my friend.' ''')"
+
+
 
 # LEPTON ROOMS
 

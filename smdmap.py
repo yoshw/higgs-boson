@@ -4,7 +4,7 @@ from gametext import *
 
 #MAP
 
-smdmap = {
+initmap = {
 0: [" "," "],
 1: ["+  S T A N D A R D","    M O D E L    D U N G E O N  +"],
 2: ["   ‾ ‾ ‾ ‾ ‾ ‾ ‾ ‾","    ‾ ‾ ‾ ‾ ‾    ‾ ‾ ‾ ‾ ‾ ‾ ‾   "],
@@ -14,28 +14,28 @@ smdmap = {
 'ZA': [" "," "],
 'ZB': ["(x: LOCKED DOOR  |  $: STAIRS  |  @: YOUR LOCATION)"]
 }
-smdmap['C'] = copy.deepcopy(smdmap['B'])
-smdmap['D'] = copy.deepcopy(smdmap['B'])
-smdmap['E'] = copy.deepcopy(smdmap['B'])
-smdmap['F'] = copy.deepcopy(smdmap['B'])
-smdmap['G'] = copy.deepcopy(smdmap['B'])
-smdmap['H'] = copy.deepcopy(smdmap['B'])
-smdmap['I'] = copy.deepcopy(smdmap['B'])
-smdmap['J'] = copy.deepcopy(smdmap['B'])
-smdmap['K'] = copy.deepcopy(smdmap['B']) + ["     N"]
-smdmap['L'] = copy.deepcopy(smdmap['B']) + ["     ^"]
-smdmap['M'] = copy.deepcopy(smdmap['B']) + [" W < + > E"]
-smdmap['N'] = copy.deepcopy(smdmap['B']) + ["     v"]
-smdmap['O'] = copy.deepcopy(smdmap['B']) + ["     S"]
-smdmap['P'] = copy.deepcopy(smdmap['B'])
-smdmap['Q'] = copy.deepcopy(smdmap['B'])
-smdmap['R'] = copy.deepcopy(smdmap['B'])
-smdmap['S'] = copy.deepcopy(smdmap['B'])
-smdmap['T'] = copy.deepcopy(smdmap['B'])
-smdmap['U'] = copy.deepcopy(smdmap['B'])
-smdmap['V'] = copy.deepcopy(smdmap['B'])
-smdmap['W'] = copy.deepcopy(smdmap['B'])
-smdmap['X'] = copy.deepcopy(smdmap['B'])
+initmap['C'] = copy.deepcopy(initmap['B'])
+initmap['D'] = copy.deepcopy(initmap['B'])
+initmap['E'] = copy.deepcopy(initmap['B'])
+initmap['F'] = copy.deepcopy(initmap['B'])
+initmap['G'] = copy.deepcopy(initmap['B'])
+initmap['H'] = copy.deepcopy(initmap['B'])
+initmap['I'] = copy.deepcopy(initmap['B'])
+initmap['J'] = copy.deepcopy(initmap['B'])
+initmap['K'] = copy.deepcopy(initmap['B']) + ["     N"]
+initmap['L'] = copy.deepcopy(initmap['B']) + ["     ^"]
+initmap['M'] = copy.deepcopy(initmap['B']) + [" W < + > E"]
+initmap['N'] = copy.deepcopy(initmap['B']) + ["     v"]
+initmap['O'] = copy.deepcopy(initmap['B']) + ["     S"]
+initmap['P'] = copy.deepcopy(initmap['B'])
+initmap['Q'] = copy.deepcopy(initmap['B'])
+initmap['R'] = copy.deepcopy(initmap['B'])
+initmap['S'] = copy.deepcopy(initmap['B'])
+initmap['T'] = copy.deepcopy(initmap['B'])
+initmap['U'] = copy.deepcopy(initmap['B'])
+initmap['V'] = copy.deepcopy(initmap['B'])
+initmap['W'] = copy.deepcopy(initmap['B'])
+initmap['X'] = copy.deepcopy(initmap['B'])
 
 #SHOW MAP
 
@@ -71,8 +71,9 @@ showmap = {
 
 #MAIN MAP FUNCTION
 
-def mapp(rm):
-    userpos(rm)
+def mapp(rm,smdmap):
+    #global smdmap
+    smdmap = userpos(rm,smdmap)
 
     k = smdmap.keys()
     k.sort()
@@ -80,21 +81,28 @@ def mapp(rm):
         i = ''.join(smdmap[i])
         print i
 
+    # Resets the user POS square so the map doesn't end up covered in @s
     smdmap[mdic[rm]['pos'][0]][mdic[rm]['pos'][1]] = showmap[mdic[rm]['pos'][0]][mdic[rm]['pos'][1]]
 
-def sqshow(y,x):
+    return smdmap
+
+def sqshow(smdmap,y,x):
+    #global smdmap
     #    print y, x, "before: ", smdmap[y][x], "after: ", showmap[y][x]
     smdmap[y][x] = showmap[y][x]
+    return smdmap
 
-def rmshow(rm):
+def rmshow(rm,smdmap):
     k = mdic[rm][1].keys()
     k.sort()
     for y in k:
         for x in mdic[rm][1][y]:
-            sqshow(y,x)
+            smdmap = sqshow(smdmap,y,x)
+    return smdmap
 
-def userpos(rm):
+def userpos(rm,smdmap):
     smdmap[mdic[rm]['pos'][0]][mdic[rm]['pos'][1]] = '@'
+    return smdmap
 
 def mapdebug():
     k = showmap.keys()

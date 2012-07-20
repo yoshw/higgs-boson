@@ -11,8 +11,11 @@ import string
 
 qflag = False
 
+smdmap = initmap
 
 def prompter(rm):
+    global states
+    global smdmap
     global qflag
     newrm = rm
     
@@ -26,17 +29,28 @@ def prompter(rm):
 #    print "ralpha:", ralpha
     
     if "inv" in raw or "inventory" in raw:
-        inv(rm)
+        inv(rm,states)
         return rm
     elif "help" in raw or "info" in raw or "instructions" in raw:
         instruct()
         return rm
     elif raw == ["map"]:
-        mapp(rm)
+        smdmap = mapp(rm,smdmap)
         return rm
     elif raw == ["save"]:
-        print "Watch this space."
+        save(states,smdmap)
         return rm
+    elif raw == ["load"]:
+        states, smdmap = load()
+	#for x in states['map'].keys():
+	#if states['map'][x] == 1:
+	#rmshow(x)
+	#k = smdmap.keys()
+	#k.sort()
+	#for i in k:
+	#i = ''.join(smdmap[i])
+	#print i
+        return states['currentrm']
     elif "exit" in raw or "quit" in raw:
         qflag = True
         return rm
@@ -111,7 +125,7 @@ def prompter(rm):
 
     if len(item) == 1:
         if mode[0] is use:
-            invuse(item[0], ralpha, rm)
+            invuse(item[0], ralpha, rm, states)
             return newrm
         else:
             print fail_txt
@@ -122,18 +136,17 @@ def prompter(rm):
 
 
 def room():
-    rm = "entryrm"
-    newrm = rm
+    rm = states['currentrm']
 
     while True:
         raw_input("\nENTER TO CONTINUE >\n")
-        exec dic[rm][roomd][states[rm][roomd]][look]
-        while newrm == rm:
-            newrm = prompter(rm)    
+        exec dic[rm][roomd][states[rm][roomd]][look] in globals()
+        while states['currentrm'] == rm:
+            states['currentrm'] = prompter(rm)    
             if qflag == True:
                 print "Goodbye!\n"
                 exit()
-        rm = newrm
+        rm = states['currentrm']
 
         
 print title_txt

@@ -1,7 +1,6 @@
 # This Python file uses the following encoding: utf-8
 
 from gametext import *
-from states import *
 from funcs import *
 import string
 
@@ -32,7 +31,7 @@ beadmap = {
 'f': "           ========================= "
 }
 
-def beadprint():
+def beadprint(states):
     for i in states[beads].keys():
         if states[beads][i] == 1:
             beadshow(i)
@@ -72,7 +71,7 @@ def beadhide(bead):
         
 # Functions
 
-def invprint():
+def invprint(states):
     inv_list = [x[0] for x in idic.keys() if (states['inv'][x] > 0 and states['inv'][x] < 9)]
     inv_list.sort(key=string.lower)
 
@@ -84,17 +83,17 @@ def invprint():
             print "        - ", inv_list[i]
     print inv2_txt
             
-def inv(rm):
-    invprint()
+def inv(rm,states):
+    invprint(states)
 
     invq = 0
     while invq != 1 and invq != 2:
-        invq = invprompter(rm)
+        invq = invprompter(rm,states)
     if invq == 1:
         print "You close your bag and sling it back over your shoulder."
     return
 
-def invprompter(rm):
+def invprompter(rm,states):
     invq = 0
     
     raw = raw_input(invprmpt).lower().split()
@@ -107,7 +106,7 @@ def invprompter(rm):
 #    print "ralpha:", ralpha
 
     if "inv" in ralpha or "inventory" in ralpha:
-        invprint()
+        invprint(states)
         return
     elif "help" in ralpha or "info" in ralpha or "instructions" in ralpha:
         instruct()
@@ -193,7 +192,7 @@ def invprompter(rm):
         exec idic[item[0]][states['inv'][item[0]]][look]
         return
     elif mode[0] == use:
-        invq = invuse(item[0], ralpha, rm)
+        invq = invuse(item[0], ralpha, rm, states)
         return invq
     else:
         if mode[0] in idic[item[0]][states['inv'][item[0]]].keys():
@@ -203,7 +202,7 @@ def invprompter(rm):
             print fail_txt
             return
 
-def invuse(item, raw, rm):
+def invuse(item, raw, rm, states):
     obj = []
     for x in dic[rm].keys():
         for n in x:
@@ -265,7 +264,7 @@ idic[beads][1][look] = """print '''
 
       You have collected the following beads:
 '''
-beadprint()
+beadprint(states)
 print '''
 ---------------------------------------------------
 '''

@@ -4,6 +4,8 @@ from gametext import *
 
 states = {}
 
+states["currentrm"] = 'entryrm'
+
 states["entryrm"] = {
     roomd: 0,
     e_door: 1,
@@ -189,4 +191,28 @@ states[beads] = {
     'g': 0,
     'Z': 0,
     'W': 0
+    }
+
+#MAP
+
+states['map'] = {
+    "entryrm": 1,
+    "mainrm": 0,
+    "strangerm": 0,
+    "charmrm": 0,
+    "downrm": 0,
+    "uprm": 0,
+    "toprm": 0,
+    "bottomrm": 0,
+    "muneurm": 0,
+    "eneurm": 0,
+    "tneurm": 0,
+    "elecrm": 0,
+    "muonrm": 0,
+    "taurm": 0,
+    "photonrm": 0,
+    "gluonrm": 0,
+    "Zrm": 0,
+    "Wrm": 0,
+    "higgsrm": 0
     }

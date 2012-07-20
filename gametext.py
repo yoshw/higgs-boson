@@ -183,7 +183,8 @@ You look around. In the eastern section of the curved wall, opposite the front e
 
 'Welcome to the Standard Model Dungeon, friend,' he says. 'Don't be afraid. The goal you seek is almost at hand. There are just a few final challenges you must face. But I am confident you'll attain your prize.' ''')
 states["entryrm"][roomd] = 1
-rmshow('entryrm')"""
+smdmap = rmshow('entryrm',smdmap)
+states['map']['entryrm'] = 1"""
 dic["entryrm"][roomd][1][look] = "print wr('You are in a small, gravityless spherical chamber. On the west side, the entrance to the Standard Model Dungeon. On the east, a large steel door. Carl Sagan floats in an armchair nearby.')"
 dic["entryrm"][roomd][2][look] = """print wr('''As the glow fades, you feel the floor drop from under your feet and realise you've materialised back in the weightless entrance chamber. Carl Sagan is still floating nearby. He looks up from his book.
 
@@ -262,7 +263,8 @@ dic["mainrm"][roomd][0][look] = """print wr('''The steel door slams shut behind 
 
 You are in a large, central hall. Its semicylindrical shape makes it feel like a miniature aircraft hangar. At the far east end of the room, directly ahead of you, is another door with a complicated lock. Closer by there are two other doors -- one in the north wall, one in the south. You shout out 'Anybody here?': the only reply is your echo.''')
 states["mainrm"][roomd] = 1
-rmshow('mainrm')"""
+smdmap = rmshow('mainrm',smdmap)
+states['map']['mainrm'] = 1"""
 dic["mainrm"][roomd][1][look] = """print wr('''You are in a long, hangar-shaped room with doors to the east, west, north and south. The west door leads back to the entrance chamber. The door to the east looks important -- it appears to have a large, complicated lock.''')"""
 
 
@@ -325,7 +327,8 @@ dic["strangerm"][roomd][0][look] = """print wr('''You close the door behind you 
 
 There's something altogether strange about this room, but you can't put your finger on what it is.''')
 states["strangerm"][roomd] = 1
-rmshow('strangerm')"""
+smdmap = rmshow('strangerm',smdmap)
+states['map']['strangerm'] = 1"""
 dic["strangerm"][roomd][1][look] = """print wr('You are in a small, strange room with identical doors to the west, north and east. In the centre of the room, Paul Dirac paces back and forth.')"""
 
 dic["strangerm"][n_door][1] = {
@@ -380,7 +383,7 @@ dic["strangerm"][dirac][2] = {
     look: "print wr('Paul Dirac: a very tall, thin English physicist who predicted the existence of antimatter.')",
     talk: """print wr('''Dirac seems excited to see you. He bends down slightly so your heads are level.
 
-'I see you have the first two beads,' he says. 'How very exciting! The game is afoot!' He rubs his hands together in a somewhat unsettling fashion.""",
+'I see you have the first two beads,' he says. 'How very exciting! The game is afoot!' He rubs his hands together in a somewhat unsettling fashion.''')""",
     opn: "print wr('''That's just rude.''')",
     use: "print wr('''Dirac's uses are many, but they are obscure.''')",
     get: "print wr('''Now's not the time to be picking fights with geniuses.''')"
@@ -441,7 +444,8 @@ In the north wall is a strange-looking door -- or rather, a portal. There is no 
 
 He turns back to the opening and you consider what to do next.''')
 states["downrm"][roomd] = 1
-rmshow('downrm')"""
+smdmap = rmshow('downrm',smdmap)
+states['map']['downrm'] = 1"""
 dic["downrm"][roomd][1][look] = """print wr('You are in a small room with a door to the east and an empty portal in the north wall. Murray Gell-Mann is hunched over near the portal. A tall wardrobe stands nearby.')"""
 dic["downrm"][roomd][2][look] = """print wr('Gell-Mann stands near the portal, looking at you expectantly. The end of the rope trails over the lintel of the portal then arcs oddly down to the ground. The wardrobe stands nearby.')"""
 dic["downrm"][roomd][3][look] = """print wr('''You are in a small room with a door to the east and an empty portal in the north wall. There's an open wardrobe just near you. Murray Gell-Mann sits in the middle of the room, peering into his briefcase full of hadrons. You're glad you were able to help him out.''')"""
@@ -673,7 +677,8 @@ dic["bottomrm"][roomd][0][look] = """print wr('''As soon as you enter the room a
 
 Looking around the room, you can't help but notice the steep staircase against the far wall, near Pauli, which leads up to a wooden trapdoor set in the ceiling. Thick, wooden supporting beams run the length of the ceiling. You haven't seen that kind of support structure anywhere else in the dungeon so far.''')
 states["bottomrm"][roomd] = 1
-rmshow('bottomrm')"""
+smdmap = rmshow('bottomrm',smdmap)
+states['map']['bottomrm'] = 1"""
 dic["bottomrm"][roomd][1][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a locked trapdoor in the ceiling. Large wooden beams support the roof. Wolfgang Pauli sits, looking exhausted, near the foot of the staircase.''')"""
 dic["bottomrm"][roomd][2][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a trapdoor in the ceiling, which stands open. Large wooden beams support the roof. Wolfgang Pauli sits, looking exhausted, near the foot of the staircase.''')"""
 dic["bottomrm"][roomd][3][look] = """print wr('''You are in a room with a steep staircase set in one wall, leading to a trapdoor in the ceiling, which stands open. Large wooden beams support the roof. Wolfgang Pauli has disappeared to the room above.''')"""
@@ -836,7 +841,8 @@ dic["toprm"][pauli] = copy.deepcopy(dic["toprm"][roomd])
 
 dic["toprm"][roomd][0][look] = """print wr('''You come up through the trapdoor into a well-furnished room. It is small but homely. There is a neatly-made single bed against one wall; a sturdy oak desk with a deep armchair; and thick purple drapes on one wall, presumably covering a window. The room is lit by a metal floor lamp standing near the desk.''')
 states["toprm"][roomd] = 1
-rmshow('toprm')"""
+smdmap = rmshow('toprm',smdmap)
+states['map']['toprm'] = 1"""
 dic["toprm"][roomd][1][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes.''')"""
 dic["toprm"][roomd][2][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes. The wooden chest you found is sitting on top of the bed.''')"""
 dic["toprm"][roomd][3][look] = """print wr('''You're in the room at the top of the stairs. It contains a single bed, a wooden desk and an armchair, a floor lamp, and a window hidden by purple drapes. The (empty) wooden chest you found is sitting on top of the bed. Pauli is sitting in the armchair, grinning.''')"""
@@ -1140,7 +1146,8 @@ dic["muneurm"][roomd][0][look] = """print wr('''You enter the room, shutting the
 
 There is other shit going on here that I can't be bothered describing right now. The important stuff you need to know is that Richard P. Feynman is sitting on a camping chair in one corner of the room, staring at you over tented fingers. There are doors set in the east, west and south walls.''')
 states["muneurm"][roomd] = 1
-rmshow('muneurm')"""
+smdmap = rmshow('muneurm',smdmap)
+states['map']['muneurm'] = 1"""
 dic["muneurm"][roomd][1][look] = """print wr('''A little room containing Feynman and doors in all four directions.''')"""
 
 dic["muneurm"][feynman][1] = {
